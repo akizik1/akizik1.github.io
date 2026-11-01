@@ -54,9 +54,11 @@ aside {
 .side-inner { position: sticky; top: 40px; display: grid; gap: 22px; }
 .photo { width: 100%; aspect-ratio: 4 / 3; height: auto; border-radius: 12px; object-fit: cover; object-position: 50% 40%; display: block; }
 h1 { font-family: var(--font-display); font-weight: 700; font-size: 36px; line-height: 1.05; margin: 0; letter-spacing: -.01em; }
-.tagline { margin: 8px 0 0; color: var(--side-muted); font-size: 15px; max-width: 32ch; }
+.tagline { margin: 6px 0 0; color: var(--side-muted); font-size: 15px; }
 .facts { list-style: none; margin: 0; padding: 18px 0 0; border-top: 1px solid var(--side-line); display: grid; gap: 12px; font-size: 14px; }
 .facts li { display: grid; gap: 1px; }
+.facts .k { margin-bottom: 2px; }
+.facts .sub { color: var(--side-muted); font-size: 13px; }
 .facts .k { font-family: var(--font-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--side-muted); }
 .buttons { display: flex; flex-wrap: wrap; gap: 8px; }
 .btn { font: 500 14px var(--font-body); text-decoration: none; padding: 8px 14px; border-radius: 8px; border: 1px solid var(--side-line); color: var(--side-fg); background: transparent; }
@@ -125,12 +127,12 @@ footer { font-size: 12px; color: var(--muted); }
       <img class="photo" src="profile.webp" alt="Alper Kizik" width="600" height="600">
       <div>
         <h1>Alper Kizik</h1>
-        <p class="tagline">I work in data quality, build tools with AI in my spare time and keep learning. Curious about e-commerce.</p>
+        <p class="tagline">Data quality specialist</p>
       </div>
       <ul class="facts">
-        <li><span class="k">Now</span><span>Data Quality Assurance Specialist at Oliant</span></li>
-        <li><span class="k">Education</span><span>MBA graduate, Management Information Systems<br>B.Sc. Civil Engineering</span></li>
-        <li><span class="k">Based in</span><span>Bulgaria · working remotely for almost 4 years</span></li>
+        <li><span class="k">Now</span><span>Data Quality Assurance Specialist</span><span class="sub">Oliant</span></li>
+        <li><span class="k">Education</span><span>MBA graduate</span><span class="sub">Management Information Systems</span></li>
+        <li><span class="k">Based in</span><span>Bulgaria</span><span class="sub">Working remotely for almost 4 years</span></li>
         <li><span class="k">Languages</span><span>Turkish, English</span></li>
       </ul>
       <div class="buttons">
@@ -145,7 +147,7 @@ footer { font-size: 12px; color: var(--muted); }
   <main>
     <section class="about">
       <p class="eyebrow">About</p>
-      <p>I enjoy research, building things, making complex ideas easy to understand and finding ways to make work more efficient. I use AI tools to work faster and turn ideas into working prototypes.</p>
+      <p>I work in data quality and spend my spare time building tools with AI. I enjoy research, making complex ideas easy to understand and finding ways to make work more efficient.</p>
       <p class="also">Other interests: emerging technologies, psychology and health, sustainability and e-commerce.</p>
     </section>
 
