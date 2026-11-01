@@ -49,17 +49,17 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outlin
 aside {
   background: var(--side-bg); color: var(--side-fg);
   position: sticky; top: 0; align-self: start; height: 100vh; overflow-y: auto;
-  padding-block: 32px;
+  padding-block: 24px;
   padding-left: max(32px, env(safe-area-inset-left, 0px)); padding-right: 32px;
   scrollbar-width: thin; scrollbar-color: var(--side-line) transparent;
 }
-.side-inner { display: grid; gap: 20px; }
-.photo { width: 100%; aspect-ratio: 4 / 3; height: auto; border-radius: 12px; object-fit: cover; object-position: center; display: block; }
-h1 { font-family: var(--font-display); font-weight: 700; font-size: 36px; line-height: 1.05; margin: 0; letter-spacing: -.01em; }
-.tagline { margin: 6px 0 0; color: var(--side-muted); font-size: 15px; }
-.facts { list-style: none; margin: 0; padding: 18px 0 0; border-top: 1px solid var(--side-line); display: grid; gap: 12px; font-size: 14px; }
+.side-inner { display: grid; gap: 16px; }
+.photo { width: 100%; height: auto; border-radius: 12px; display: block; }
+h1 { font-family: var(--font-display); font-weight: 700; font-size: 32px; line-height: 1.05; margin: 0; letter-spacing: -.01em; }
+.tagline { margin: 4px 0 0; color: var(--side-muted); font-size: 15px; }
+.facts { list-style: none; margin: 0; padding: 14px 0 0; border-top: 1px solid var(--side-line); display: grid; gap: 9px; font-size: 14px; line-height: 1.4; }
 .facts li { display: grid; gap: 1px; }
-.facts .k { margin-bottom: 2px; }
+.facts .k { margin-bottom: 1px; }
 .facts .sub { color: var(--side-muted); font-size: 13px; }
 .facts .k { font-family: var(--font-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--side-muted); }
 .buttons { display: flex; flex-wrap: wrap; gap: 8px; }
@@ -90,15 +90,16 @@ main {
 .dots button.on { background: #13202b; }
 .project h3 { font-family: var(--font-display); font-weight: 700; font-size: 24px; line-height: 1.2; margin: 0 0 8px; }
 .project p { margin: 0 0 14px; color: var(--muted); font-size: 15px; }
+.project p.note { font-size: 13px; border-left: 2px solid var(--line); padding-left: 10px; }
 .tools { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
 .tools span { font-family: var(--font-mono); font-size: 12px; color: var(--muted); background: var(--paper); border-radius: 5px; padding: 2px 8px; }
 .more { font-size: 13px; }
 
 .timeline { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 40px; }
 .rows { list-style: none; margin: 0; padding: 0; display: grid; }
-.rows li { display: grid; grid-template-columns: 108px minmax(0, 1fr); gap: 12px; padding: 9px 0; border-top: 1px solid var(--line); }
+.rows li { display: grid; grid-template-columns: 142px minmax(0, 1fr); gap: 12px; padding: 9px 0; border-top: 1px solid var(--line); }
 .rows li:last-child { border-bottom: 1px solid var(--line); }
-.when { font-family: var(--font-mono); font-size: 12px; color: var(--muted); padding-top: 2px; font-variant-numeric: tabular-nums; }
+.when { white-space: nowrap; font-family: var(--font-mono); font-size: 11.5px; color: var(--muted); padding-top: 2px; font-variant-numeric: tabular-nums; }
 .rows b { font-weight: 600; display: block; }
 .rows .org { color: var(--muted); font-size: 14px; }
 footer { font-size: 12px; color: var(--muted); }
@@ -107,7 +108,7 @@ footer { font-size: 12px; color: var(--muted); }
   .project { grid-template-columns: 1fr; padding: 14px 14px 20px; gap: 18px; }
   .project .text { padding: 0 6px; }
 }
-@media (max-width: 960px) {
+@media (max-width: 1240px) {
   .timeline { grid-template-columns: 1fr; gap: 28px; }
 }
 @media (max-width: 780px) {
@@ -115,7 +116,7 @@ footer { font-size: 12px; color: var(--muted); }
   aside { position: static; height: auto; overflow: visible; padding-block: 32px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
   main { padding-block: 32px 40px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
   .about p { font-size: 17px; }
-  .rows li { grid-template-columns: 92px minmax(0, 1fr); }
+  .rows li { grid-template-columns: 1fr; gap: 2px; }
 }
 @media (prefers-reduced-motion: reduce) { .frame img { transition: none; } }
 </style>
@@ -125,14 +126,14 @@ footer { font-size: 12px; color: var(--muted); }
 <div class="page">
   <aside>
     <div class="side-inner">
-      <img class="photo" src="profile.webp" alt="Alper Kizik" width="600" height="600">
+      <img class="photo" src="photo.webp" alt="Alper Kizik" width="618" height="436">
       <div>
         <h1>Alper Kizik</h1>
         <p class="tagline">Data quality specialist</p>
       </div>
       <ul class="facts">
         <li><span class="k">Now</span><span>Data Quality Assurance Specialist</span><span class="sub">Oliant</span></li>
-        <li><span class="k">Education</span><span>MBA graduate</span><span class="sub">Management Information Systems</span></li>
+        <li><span class="k">Education</span><span>MBA in Management Information Systems</span></li>
         <li><span class="k">Based in</span><span>Bulgaria</span><span class="sub">Working remotely for almost 4 years</span></li>
         <li><span class="k">Languages</span><span>Turkish, English</span></li>
       </ul>
@@ -161,19 +162,19 @@ footer { font-size: 12px; color: var(--muted); }
       <div>
         <p class="eyebrow">Experience</p>
         <ul class="rows">
-          <li><span class="when">2023 – now</span><span><b>Data Quality Assurance Specialist</b><span class="org">Oliant · Remote</span></span></li>
-          <li><span class="when">2025 – 2026</span><span><b>Research Team Lead (volunteer)</b><span class="org">Wiley-IEEE book project</span></span></li>
-          <li><span class="when">2024 – 2025</span><span><b>Business Process and Data Quality Analyst</b><span class="org">Cybertexex · Remote</span></span></li>
-          <li><span class="when">2024</span><span><b>Research Assistant (volunteer)</b><span class="org">Springer book project</span></span></li>
-          <li><span class="when">2023 – 2024</span><span><b>Customer Success and Technical Support</b><span class="org">TELUS International · Remote</span></span></li>
-          <li><span class="when">2022 – 2023</span><span><b>Operations Assistant, International Trade</b><span class="org">VEO · Sofia</span></span></li>
+          <li><span class="when">May 2023 – Present</span><span><b>Data Quality Assurance Specialist</b><span class="org">Oliant · Remote</span></span></li>
+          <li><span class="when">Jan 2025 – Jan 2026</span><span><b>Research Team Lead (volunteer)</b><span class="org">Wiley-IEEE book project</span></span></li>
+          <li><span class="when">May 2024 – Jan 2025</span><span><b>Business Process and Data Quality Analyst</b><span class="org">Cybertexex · Remote</span></span></li>
+          <li><span class="when">Mar 2024 – Oct 2024</span><span><b>Research Assistant (volunteer)</b><span class="org">Springer book project</span></span></li>
+          <li><span class="when">Jun 2023 – Mar 2024</span><span><b>Customer Success and Technical Support</b><span class="org">TELUS International · Remote</span></span></li>
+          <li><span class="when">Nov 2022 – May 2023</span><span><b>Operations Assistant, International Trade</b><span class="org">VEO · Sofia</span></span></li>
         </ul>
       </div>
       <div>
         <p class="eyebrow">Education</p>
         <ul class="rows">
-          <li><span class="when">2022 – 2025</span><span><b>MBA, Management Information Systems</b><span class="org">Sofia University St. Kliment Ohridski · High Honors</span></span></li>
-          <li><span class="when">2016 – 2021</span><span><b>B.Sc. Civil Engineering</b><span class="org">Istanbul Technical University · High Honors</span></span></li>
+          <li><span class="when">Sep 2022 – May 2025</span><span><b>MBA, Management Information Systems</b><span class="org">Sofia University St. Kliment Ohridski</span></span></li>
+          <li><span class="when">Sep 2016 – Jun 2021</span><span><b>B.Sc. Civil Engineering</b><span class="org">Istanbul Technical University</span></span></li>
         </ul>
       </div>
     </section>
@@ -197,6 +198,7 @@ var PROJECTS = [
   {
     title: "Shopify CRO Checker",
     description: "A desktop app that audits a Shopify store the way a CRO team does. It runs 27 checks, opens the page in a real phone browser and marks what to change, ranks each idea by priority, and writes briefs and A/B test plans.",
+    note: "Built with Claude as my coding partner. I decided what to check, how ideas are scored and how results are explained; Claude wrote most of the code.",
     tools: ["Python", "Tkinter", "Playwright", "BeautifulSoup", "PageSpeed API", "Claude API"],
     images: ["cro-01.webp","cro-02.webp","cro-03.webp","cro-04.webp","cro-05.webp","cro-06.webp","cro-07.webp","cro-08.webp","cro-09.webp","cro-10.webp","cro-11.webp"],
     link: ""
@@ -230,7 +232,9 @@ var PROJECTS = [
     var ds = document.createElement('p'); ds.textContent = p.description;
     var t = document.createElement('div'); t.className = 'tools';
     p.tools.forEach(function (x) { var s = document.createElement('span'); s.textContent = x; t.appendChild(s); });
-    text.append(h, ds, t);
+    text.append(h, ds);
+    if (p.note) { var n = document.createElement('p'); n.className = 'note'; n.textContent = p.note; text.appendChild(n); }
+    text.appendChild(t);
     if (p.link) { var a = document.createElement('a'); a.className = 'more'; a.href = p.link; a.target = '_blank'; a.rel = 'noopener'; a.textContent = 'View on GitHub →'; text.appendChild(a); }
     card.append(frame, text); list.appendChild(card);
   });
