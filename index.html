@@ -93,7 +93,8 @@ main {
 .project p.note { font-size: 13px; border-left: 2px solid var(--line); padding-left: 10px; }
 .tools { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
 .tools span { font-family: var(--font-mono); font-size: 12px; color: var(--muted); background: var(--paper); border-radius: 5px; padding: 2px 8px; }
-.more { font-size: 13px; }
+.more { display: inline-flex; align-items: center; gap: 6px; font: 500 14px var(--font-body); text-decoration: none; color: var(--paper); background: var(--ink); padding: 8px 14px; border-radius: 8px; }
+.more:hover { opacity: .88; }
 
 .timeline { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 40px; }
 .rows { list-style: none; margin: 0; padding: 0; display: grid; }
@@ -201,7 +202,7 @@ var PROJECTS = [
     note: "Built with Claude as my coding partner. I decided what to check, how ideas are scored and how results are explained; Claude wrote most of the code.",
     tools: ["Python", "Tkinter", "Playwright", "BeautifulSoup", "PageSpeed API", "Claude API"],
     images: ["cro-01.webp","cro-02.webp","cro-03.webp","cro-04.webp","cro-05.webp","cro-06.webp","cro-07.webp","cro-08.webp","cro-09.webp","cro-10.webp","cro-11.webp"],
-    link: ""
+    link: "https://github.com/akizik1/shopify-cro-checker"
   }
 ];
 (function () {
@@ -235,7 +236,7 @@ var PROJECTS = [
     text.append(h, ds);
     if (p.note) { var n = document.createElement('p'); n.className = 'note'; n.textContent = p.note; text.appendChild(n); }
     text.appendChild(t);
-    if (p.link) { var a = document.createElement('a'); a.className = 'more'; a.href = p.link; a.target = '_blank'; a.rel = 'noopener'; a.textContent = 'View on GitHub →'; text.appendChild(a); }
+    if (p.link) { var a = document.createElement('a'); a.className = 'more'; a.href = p.link; a.target = '_blank'; a.rel = 'noopener'; a.textContent = 'View code on GitHub →'; text.appendChild(a); }
     card.append(frame, text); list.appendChild(card);
   });
 })();
