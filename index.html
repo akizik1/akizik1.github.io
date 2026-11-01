@@ -54,7 +54,7 @@ aside {
   scrollbar-width: thin; scrollbar-color: var(--side-line) transparent;
 }
 .side-inner { display: grid; gap: 16px; }
-.photo { width: 100%; height: auto; border-radius: 12px; display: block; }
+.photo { width: 100%; aspect-ratio: 27 / 20; height: auto; object-fit: cover; object-position: 50% 61%; border-radius: 12px; display: block; }
 h1 { font-family: var(--font-display); font-weight: 700; font-size: 32px; line-height: 1.05; margin: 0; letter-spacing: -.01em; }
 .tagline { margin: 4px 0 0; color: var(--side-muted); font-size: 15px; }
 .facts { list-style: none; margin: 0; padding: 14px 0 0; border-top: 1px solid var(--side-line); display: grid; gap: 9px; font-size: 14px; line-height: 1.4; }
@@ -127,7 +127,7 @@ footer { font-size: 12px; color: var(--muted); }
 <div class="page">
   <aside>
     <div class="side-inner">
-      <img class="photo" src="photo.webp" alt="Alper Kizik" width="810" height="600">
+      <img class="photo" src="profile.jpg" alt="Alper Kizik" width="1817" height="2242">
       <div>
         <h1>Alper Kizik</h1>
         <p class="tagline">Data quality specialist</p>
