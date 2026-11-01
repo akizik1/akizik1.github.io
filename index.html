@@ -52,7 +52,7 @@ aside {
   padding-left: max(32px, env(safe-area-inset-left, 0px)); padding-right: 32px;
 }
 .side-inner { position: sticky; top: 40px; display: grid; gap: 22px; }
-.photo { width: 112px; height: 112px; border-radius: 50%; object-fit: cover; display: block; border: 2px solid var(--side-line); }
+.photo { width: 100%; aspect-ratio: 4 / 3; height: auto; border-radius: 12px; object-fit: cover; object-position: 50% 40%; display: block; }
 h1 { font-family: var(--font-display); font-weight: 700; font-size: 36px; line-height: 1.05; margin: 0; letter-spacing: -.01em; }
 .tagline { margin: 8px 0 0; color: var(--side-muted); font-size: 15px; max-width: 32ch; }
 .facts { list-style: none; margin: 0; padding: 18px 0 0; border-top: 1px solid var(--side-line); display: grid; gap: 12px; font-size: 14px; }
