@@ -121,6 +121,23 @@ footer { font-size: 12px; color: var(--muted); }
   .about p { font-size: 17px; }
   .rows li { grid-template-columns: 1fr; gap: 2px; }
 }
+.frame { cursor: zoom-in; }
+.nav { position: absolute; top: 50%; transform: translateY(-50%); width: 36px; height: 36px; border-radius: 50%; border: 0; background: rgba(19,32,43,.72); color: #fff; font: 400 24px/1 var(--font-body); padding: 0 0 3px; cursor: pointer; opacity: 0; transition: opacity .2s; z-index: 2; }
+.nav.prev { left: 10px; } .nav.next { right: 10px; }
+.frame:hover .nav, .nav:focus-visible { opacity: 1; }
+@media (hover: none) { .nav { opacity: .85; } .zoom-hint { display: none; } }
+.zoom-hint { position: absolute; top: 10px; right: 10px; font: 500 11px var(--font-body); color: #fff; background: rgba(19,32,43,.72); padding: 3px 8px; border-radius: 5px; opacity: 0; transition: opacity .2s; pointer-events: none; }
+.frame:hover .zoom-hint { opacity: 1; }
+.lightbox { position: fixed; inset: 0; z-index: 50; background: rgba(8,12,16,.92); display: grid; place-items: center;
+  padding: max(56px, env(safe-area-inset-top, 0px)) max(64px, env(safe-area-inset-right, 0px)) max(56px, env(safe-area-inset-bottom, 0px)) max(64px, env(safe-area-inset-left, 0px)); }
+.lightbox[hidden] { display: none; }
+.lightbox img { max-width: 100%; max-height: calc(100vh - 112px); object-fit: contain; border-radius: 8px; background: #f6f7f8; }
+.lb-close { position: absolute; top: max(12px, env(safe-area-inset-top, 0px)); right: max(16px, env(safe-area-inset-right, 0px)); width: 40px; height: 40px; border: 0; border-radius: 50%; background: rgba(255,255,255,.12); color: #fff; font: 400 26px/1 var(--font-body); cursor: pointer; }
+.lb-nav { position: absolute; top: 50%; transform: translateY(-50%); width: 44px; height: 44px; border: 0; border-radius: 50%; background: rgba(255,255,255,.12); color: #fff; font: 400 28px/1 var(--font-body); padding: 0 0 3px; cursor: pointer; }
+.lb-prev { left: max(12px, env(safe-area-inset-left, 0px)); } .lb-next { right: max(12px, env(safe-area-inset-right, 0px)); }
+.lb-close:hover, .lb-nav:hover { background: rgba(255,255,255,.22); }
+.lb-count { position: absolute; bottom: max(16px, env(safe-area-inset-bottom, 0px)); left: 0; right: 0; text-align: center; color: #c9d2da; font: 400 12px var(--font-mono); }
+@media (max-width: 780px) { .lightbox { padding-left: 12px; padding-right: 12px; } .lb-nav { top: auto; bottom: max(8px, env(safe-area-inset-bottom, 0px)); transform: none; } }
 @media (prefers-reduced-motion: reduce) { .frame img { transition: none; } }
 </style>
 </head>
@@ -201,7 +218,7 @@ var PROJECTS = [
   {
     title: "Shopify CRO Checker",
     description: "A desktop app that audits a Shopify store the way a CRO team does. It runs 27 checks, opens the page in a real phone browser and marks what to change, ranks each idea by priority, and writes briefs and A/B test plans.",
-    note: "Built with Claude as my coding partner. I decided what to check, how ideas are scored and how results are explained; Claude wrote most of the code.",
+    note: "Built with Claude. I designed the logic, the visuals and how it should work, and guided each step with my prompts; Claude wrote the code.",
     tools: ["Python", "Tkinter", "Playwright", "BeautifulSoup", "PageSpeed API", "Claude API"],
     images: ["cro-01.webp","cro-02.webp","cro-03.webp","cro-04.webp","cro-05.webp","cro-06.webp","cro-07.webp","cro-08.webp","cro-09.webp","cro-10.webp","cro-11.webp"],
     link: "https://github.com/akizik1/shopify-cro-checker"
@@ -210,33 +227,73 @@ var PROJECTS = [
 (function () {
   var list = document.getElementById('projectList');
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* Lightbox: opens a screenshot large, with arrows and Esc to close */
+  var lb = document.createElement('div'); lb.className = 'lightbox'; lb.hidden = true;
+  lb.innerHTML = '<button type="button" class="lb-close" aria-label="Close">×</button>' +
+    '<button type="button" class="lb-nav lb-prev" aria-label="Previous screenshot">‹</button>' +
+    '<img alt="">' +
+    '<button type="button" class="lb-nav lb-next" aria-label="Next screenshot">›</button>' +
+    '<div class="lb-count"></div>';
+  document.body.appendChild(lb);
+  var lbImg = lb.querySelector('img'), lbCount = lb.querySelector('.lb-count'), lbList = [], lbI = 0, lbOnClose = null;
+  function lbShow(k) { lbI = (k + lbList.length) % lbList.length; lbImg.src = lbList[lbI].src; lbImg.alt = lbList[lbI].alt; lbCount.textContent = (lbI + 1) + ' / ' + lbList.length; }
+  function lbOpen(imgs, k, onClose) { lbList = imgs; lbOnClose = onClose; lbShow(k); lb.hidden = false; document.documentElement.style.overflow = 'hidden'; lb.querySelector('.lb-close').focus(); }
+  function lbClose() { lb.hidden = true; document.documentElement.style.overflow = ''; if (lbOnClose) lbOnClose(lbI); }
+  lb.querySelector('.lb-close').onclick = lbClose;
+  lb.querySelector('.lb-prev').onclick = function (e) { e.stopPropagation(); lbShow(lbI - 1); };
+  lb.querySelector('.lb-next').onclick = function (e) { e.stopPropagation(); lbShow(lbI + 1); };
+  lb.addEventListener('click', function (e) { if (e.target === lb) lbClose(); });
+  document.addEventListener('keydown', function (e) {
+    if (lb.hidden) return;
+    if (e.key === 'Escape') lbClose();
+    if (e.key === 'ArrowLeft') lbShow(lbI - 1);
+    if (e.key === 'ArrowRight') lbShow(lbI + 1);
+  });
+
   PROJECTS.forEach(function (p) {
     var card = document.createElement('article'); card.className = 'project';
     var frame = document.createElement('div'); frame.className = 'frame';
-    var imgs = [], dots = [], i = 0, timer = null;
+    var imgs = [], dots = [], i = 0, timer = null, paused = false;
     p.images.forEach(function (src, k) {
       var im = document.createElement('img'); im.src = src; im.alt = p.title + ' screenshot ' + (k + 1);
       if (k === 0) im.className = 'on'; frame.appendChild(im); imgs.push(im);
     });
+    function show(k) {
+      k = (k + imgs.length) % imgs.length;
+      imgs[i].classList.remove('on'); dots[i] && dots[i].classList.remove('on');
+      i = k; imgs[i].classList.add('on'); dots[i] && dots[i].classList.add('on');
+    }
+    function restart() { clearInterval(timer); if (!reduce && !paused && imgs.length > 1) timer = setInterval(function () { show(i + 1); }, 3500); }
     if (imgs.length > 1) {
       var d = document.createElement('div'); d.className = 'dots';
       imgs.forEach(function (_, k) {
         var b = document.createElement('button'); b.type = 'button'; b.setAttribute('aria-label', 'Show screenshot ' + (k + 1));
-        if (k === 0) b.className = 'on'; b.onclick = function () { show(k); restart(); };
+        if (k === 0) b.className = 'on'; b.onclick = function (e) { e.stopPropagation(); show(k); restart(); };
         d.appendChild(b); dots.push(b);
       });
-      frame.appendChild(d);
+      var prev = document.createElement('button'); prev.type = 'button'; prev.className = 'nav prev'; prev.setAttribute('aria-label', 'Previous screenshot'); prev.textContent = '‹';
+      var next = document.createElement('button'); next.type = 'button'; next.className = 'nav next'; next.setAttribute('aria-label', 'Next screenshot'); next.textContent = '›';
+      prev.onclick = function (e) { e.stopPropagation(); show(i - 1); restart(); };
+      next.onclick = function (e) { e.stopPropagation(); show(i + 1); restart(); };
+      frame.append(d, prev, next);
     }
-    function show(k) { imgs[i].classList.remove('on'); dots[i].classList.remove('on'); i = k; imgs[i].classList.add('on'); dots[i].classList.add('on'); }
-    function restart() { clearInterval(timer); if (!reduce && imgs.length > 1) timer = setInterval(function () { show((i + 1) % imgs.length); }, 3500); }
+    var hint = document.createElement('span'); hint.className = 'zoom-hint'; hint.textContent = 'Click to enlarge'; frame.appendChild(hint);
+    frame.addEventListener('mouseenter', function () { paused = true; restart(); });
+    frame.addEventListener('mouseleave', function () { paused = false; restart(); });
+    frame.addEventListener('click', function () {
+      paused = true; restart();
+      lbOpen(imgs, i, function (k) { show(k); paused = false; restart(); });
+    });
     restart();
+
     var text = document.createElement('div'); text.className = 'text';
     var h = document.createElement('h3'); h.textContent = p.title;
     var ds = document.createElement('p'); ds.textContent = p.description;
-    var t = document.createElement('div'); t.className = 'tools';
-    p.tools.forEach(function (x) { var s = document.createElement('span'); s.textContent = x; t.appendChild(s); });
     text.append(h, ds);
     if (p.note) { var n = document.createElement('p'); n.className = 'note'; n.textContent = p.note; text.appendChild(n); }
+    var t = document.createElement('div'); t.className = 'tools';
+    p.tools.forEach(function (x) { var s = document.createElement('span'); s.textContent = x; t.appendChild(s); });
     text.appendChild(t);
     if (p.link) { var a = document.createElement('a'); a.className = 'more'; a.href = p.link; a.target = '_blank'; a.rel = 'noopener'; a.textContent = 'View code on GitHub →'; text.appendChild(a); }
     card.append(frame, text); list.appendChild(card);
