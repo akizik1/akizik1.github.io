@@ -96,6 +96,9 @@ main {
 .tools span { font-family: var(--font-mono); font-size: 12px; color: var(--muted); background: var(--paper); border-radius: 5px; padding: 2px 8px; }
 .more { display: inline-flex; align-items: center; gap: 6px; font: 500 14px var(--font-body); text-decoration: none; color: var(--paper); background: var(--ink); padding: 8px 14px; border-radius: 8px; }
 .more:hover { opacity: .88; }
+#projectList { display: grid; gap: 20px; }
+.links { display: flex; flex-wrap: wrap; gap: 8px; }
+.more.alt { color: var(--ink); background: transparent; border: 1px solid var(--line); }
 
 .timeline { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 40px; }
 .rows { list-style: none; margin: 0; padding: 0; display: grid; }
@@ -213,15 +216,24 @@ document.getElementById('copyBtn').addEventListener('click', function () {
 </script>
 
 <script>
-/* To add a project: copy the block below. Put screenshots in  and list them. */
+/* To add a project: copy a block below. Put screenshots next to index.html and list them.
+   links: buttons under the text (first one is filled, the rest outlined). */
 var PROJECTS = [
+  {
+    title: "Pano: Seller Panel",
+    description: "A web app for small online sellers. Upload a sales file from your store or type sales in by hand, and see revenue, best sellers, trends and stock in one place. It also tracks supplier orders and ad spend, gives rule-based suggestions, and lets the shop owner invite staff and choose what each person can see. Works on phones and can be installed like an app.",
+    note: "Built with Claude. I designed the logic, the visuals and how it should work, and guided each step with my prompts; Claude wrote the code. The code is private, so the button opens the live app.",
+    tools: ["JavaScript", "Vite", "Supabase", "PostgreSQL", "Cloudflare Workers", "PWA", "IndexedDB"],
+    images: ["pano-02.webp","pano-03.webp","pano-04.webp","pano-05.webp","pano-06.webp","pano-07.webp","pano-08.webp","pano-01.webp"],
+    links: [{ label: "Open the app →", url: "https://seller-panel.alperhasankizik.workers.dev/" }]
+  },
   {
     title: "Shopify CRO Checker",
     description: "A desktop app that audits a Shopify store the way a CRO team does. It runs 27 checks, opens the page in a real phone browser and marks what to change, ranks each idea by priority, and writes briefs and A/B test plans.",
     note: "Built with Claude. I designed the logic, the visuals and how it should work, and guided each step with my prompts; Claude wrote the code.",
     tools: ["Python", "Tkinter", "Playwright", "BeautifulSoup", "PageSpeed API", "Claude API"],
     images: ["cro-01.webp","cro-02.webp","cro-03.webp","cro-04.webp","cro-05.webp","cro-06.webp","cro-07.webp","cro-08.webp","cro-09.webp","cro-10.webp","cro-11.webp"],
-    link: "https://github.com/akizik1/shopify-cro-checker"
+    links: [{ label: "Open the app →", url: "https://shopify-cro-checker.streamlit.app/" }, { label: "View code on GitHub →", url: "https://github.com/akizik1/shopify-cro-checker" }]
   }
 ];
 (function () {
@@ -295,7 +307,12 @@ var PROJECTS = [
     var t = document.createElement('div'); t.className = 'tools';
     p.tools.forEach(function (x) { var s = document.createElement('span'); s.textContent = x; t.appendChild(s); });
     text.appendChild(t);
-    if (p.link) { var a = document.createElement('a'); a.className = 'more'; a.href = p.link; a.target = '_blank'; a.rel = 'noopener'; a.textContent = 'View code on GitHub →'; text.appendChild(a); }
+    var links = p.links || (p.link ? [{ label: 'View code on GitHub →', url: p.link }] : []);
+    if (links.length) {
+      var row = document.createElement('div'); row.className = 'links';
+      links.forEach(function (l, k) { var a = document.createElement('a'); a.className = k ? 'more alt' : 'more'; a.href = l.url; a.target = '_blank'; a.rel = 'noopener'; a.textContent = l.label; row.appendChild(a); });
+      text.appendChild(row);
+    }
     card.append(frame, text); list.appendChild(card);
   });
 })();
