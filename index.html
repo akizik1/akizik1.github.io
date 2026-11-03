@@ -120,7 +120,7 @@ footer { font-size: 12px; color: var(--muted); }
 @media (max-width: 780px) {
   .page { grid-template-columns: 1fr; }
   .photo-wrap { max-height: none; }
-  aside { position: static; height: auto; overflow: visible; padding-block: 32px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+  aside { position: static; height: auto; overflow: visible; padding-block: 64px 32px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
   main { padding-block: 32px 40px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
   .about p { font-size: 17px; }
   .rows li { grid-template-columns: 1fr; gap: 2px; }
@@ -143,9 +143,60 @@ footer { font-size: 12px; color: var(--muted); }
 .lb-count { position: absolute; bottom: max(16px, env(safe-area-inset-bottom, 0px)); left: 0; right: 0; text-align: center; color: #c9d2da; font: 400 12px var(--font-mono); }
 @media (max-width: 780px) { .lightbox { padding-left: 12px; padding-right: 12px; } .lb-nav { top: auto; bottom: max(8px, env(safe-area-inset-bottom, 0px)); transform: none; } }
 @media (prefers-reduced-motion: reduce) { .frame img { transition: none; } }
+
+/* Top-right settings: language switch + light/dark toggle. Fixed so it is always reachable without scrolling. */
+.prefs { position: fixed; z-index: 40; top: max(14px, env(safe-area-inset-top, 0px)); right: max(16px, env(safe-area-inset-right, 0px));
+  display: flex; align-items: center; gap: 6px; padding: 4px; border-radius: 999px;
+  background: var(--surface); border: 1px solid var(--line); box-shadow: 0 2px 10px rgba(8,12,16,.12); }
+.lang { display: flex; gap: 2px; }
+.lang button { font: 500 12px var(--font-mono); letter-spacing: .04em; color: var(--muted); background: transparent; border: 0; border-radius: 999px; padding: 6px 10px; cursor: pointer; }
+.lang button:hover { color: var(--ink); }
+.lang button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+.prefs .sep { width: 1px; height: 18px; background: var(--line); }
+.pref-label { display: inline-flex; align-items: center; gap: 5px; padding-left: 8px; font: 500 12px var(--font-body); color: var(--muted); }
+.pref-label svg { width: 14px; height: 14px; }
+.theme-btn { display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 12px 0 9px; border: 0; border-radius: 999px; background: transparent; color: var(--ink); font: 500 12px var(--font-body); white-space: nowrap; cursor: pointer; }
+.theme-btn:hover { background: var(--paper); }
+.theme-btn svg { width: 16px; height: 16px; flex: none; }
+@media (max-width: 420px) { .pref-label { padding-left: 6px; } .lang button { padding: 6px 7px; } .theme-btn { padding: 0 9px 0 7px; } }
+.theme-btn .sun { display: none; }
+:root[data-theme="dark"] .theme-btn .sun { display: block; }
+:root[data-theme="dark"] .theme-btn .moon { display: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .theme-btn .sun { display: block; }
+  :root:not([data-theme="light"]) .theme-btn .moon { display: none; }
+}
+@media (max-width: 780px) { .prefs { top: max(10px, env(safe-area-inset-top, 0px)); right: max(10px, env(safe-area-inset-right, 0px)); } }
 </style>
+<script>
+/* Runs before the page draws, so the saved theme and language apply without a flash. */
+(function () {
+  try {
+    var t = localStorage.getItem('theme');
+    if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+  } catch (e) {}
+})();
+</script>
 </head>
 <body>
+
+<div class="prefs" role="group" aria-label="Settings">
+  <span class="pref-label" id="langLabel">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>
+    <span data-i18n="uiLang">Language</span>
+  </span>
+  <div class="lang" role="group" aria-labelledby="langLabel">
+    <button type="button" data-lang="en" aria-pressed="true">EN</button>
+    <button type="button" data-lang="tr" aria-pressed="false">TR</button>
+    <button type="button" data-lang="bg" aria-pressed="false">BG</button>
+  </div>
+  <span class="sep" aria-hidden="true"></span>
+  <button type="button" class="theme-btn" id="themeBtn">
+    <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+    <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.2M12 19.8V22M4.9 4.9l1.6 1.6M17.5 17.5l1.6 1.6M2 12h2.2M19.8 12H22M4.9 19.1l1.6-1.6M17.5 6.5l1.6-1.6"/></svg>
+    <span id="themeText">Dark mode</span>
+  </button>
+</div>
 
 <div class="page">
   <aside>
@@ -153,88 +204,220 @@ footer { font-size: 12px; color: var(--muted); }
       <div class="photo-wrap"><img class="photo" src="profile.jpg" alt="Alper Kizik" width="1817" height="2242"></div>
       <div>
         <h1>Alper Kizik</h1>
-        <p class="tagline">Data quality specialist</p>
+        <p class="tagline" data-i18n="tagline">Data quality specialist</p>
       </div>
       <ul class="facts">
-        <li><span class="k">Now</span><span>Data Quality Assurance Specialist</span><span class="sub">Oliant</span></li>
-        <li><span class="k">Education</span><span>MBA in Management Information Systems</span></li>
-        <li><span class="k">Based in</span><span>Bulgaria</span><span class="sub">Working remotely for almost 4 years</span></li>
-        <li><span class="k">Languages</span><span>Turkish, English</span></li>
+        <li><span class="k" data-i18n="kNow">Now</span><span data-i18n="jobDqa">Data Quality Assurance Specialist</span><span class="sub">Oliant</span></li>
+        <li><span class="k" data-i18n="kEdu">Education</span><span data-i18n="mbaShort">MBA in Management Information Systems</span></li>
+        <li><span class="k" data-i18n="kBased">Based in</span><span data-i18n="bulgaria">Bulgaria</span><span class="sub" data-i18n="remote4">Working remotely for almost 4 years</span></li>
+        <li><span class="k" data-i18n="kLang">Languages</span><span data-i18n="langs">Turkish, English</span></li>
       </ul>
       <div class="buttons">
-        <a class="btn primary" href="Alper_Kizik_CV.pdf" target="_blank" rel="noopener">View CV</a>
+        <a class="btn primary" href="Alper_Kizik_CV.pdf" target="_blank" rel="noopener" data-i18n="viewCv">View CV</a>
         <a class="btn" href="https://www.linkedin.com/in/alperkizik" target="_blank" rel="noopener">LinkedIn</a>
         <a class="btn" href="https://github.com/akizik1" target="_blank" rel="noopener">GitHub</a>
       </div>
-      <div class="mail"><span id="email">alperhasankizik@gmail.com</span><button type="button" id="copyBtn">Copy</button></div>
+      <div class="mail"><span id="email">alperhasankizik@gmail.com</span><button type="button" id="copyBtn" data-i18n="copy">Copy</button></div>
     </div>
   </aside>
 
   <main>
     <section class="about">
-      <p class="eyebrow">About</p>
-      <p>I work in data quality and spend my spare time building tools with AI. I enjoy research, making complex ideas easy to understand and finding ways to make work more efficient.</p>
-      <p class="also">Other interests: emerging technologies, psychology and health, sustainability and e-commerce.</p>
+      <p class="eyebrow" data-i18n="about">About</p>
+      <p data-i18n="aboutText">I work in data quality and spend my spare time building tools with AI. I enjoy research, making complex ideas easy to understand and finding ways to make work more efficient.</p>
+      <p class="also" data-i18n="aboutAlso">Other interests: emerging technologies, psychology and health, sustainability and e-commerce.</p>
     </section>
 
     <section>
-      <p class="eyebrow">Projects</p>
+      <p class="eyebrow" data-i18n="projects">Projects</p>
       <div id="projectList"></div>
     </section>
 
     <section class="timeline">
       <div>
-        <p class="eyebrow">Experience</p>
+        <p class="eyebrow" data-i18n="experience">Experience</p>
         <ul class="rows">
-          <li><span class="when">May 2023 – Present</span><span><b>Data Quality Assurance Specialist</b><span class="org">Oliant · Remote</span></span></li>
-          <li><span class="when">Jan 2025 – Jan 2026</span><span><b>Research Team Lead (volunteer)</b><span class="org">Wiley-IEEE book: <a class="book" href="https://www.wiley.com/en-jp/shop/general-energy/intelligent-power-systems-a-comprehensive-guide-to-ai-iot-big-data-and-digital-twins-p-9781394474813" target="_blank" rel="noopener"><i>Intelligent Power Systems</i></a> · Remote</span></span></li>
-          <li><span class="when">May 2024 – Jan 2025</span><span><b>Business Process and Data Quality Analyst</b><span class="org">Cybertexex · Remote</span></span></li>
-          <li><span class="when">Mar 2024 – Oct 2024</span><span><b>Research Assistant (volunteer)</b><span class="org">Springer book: <a class="book" href="https://link.springer.com/book/10.1007/978-3-032-10440-3" target="_blank" rel="noopener"><i>Financing the Green Transition</i></a> · Remote</span></span></li>
-          <li><span class="when">Jun 2023 – Mar 2024</span><span><b>Customer Success and Technical Support</b><span class="org">TELUS International · Remote</span></span></li>
-          <li><span class="when">Nov 2022 – May 2023</span><span><b>Operations Assistant, International Trade</b><span class="org">VEO · Sofia</span></span></li>
+          <li><span class="when" data-i18n="w1">May 2023 – Present</span><span><b data-i18n="jobDqa">Data Quality Assurance Specialist</b><span class="org" data-i18n="o1">Oliant · Remote</span></span></li>
+          <li><span class="when" data-i18n="w2">Jan 2025 – Jan 2026</span><span><b data-i18n="j2">Research Team Lead (volunteer)</b><span class="org" data-i18n="o2">Wiley-IEEE book: <a class="book" href="https://www.wiley.com/en-jp/shop/general-energy/intelligent-power-systems-a-comprehensive-guide-to-ai-iot-big-data-and-digital-twins-p-9781394474813" target="_blank" rel="noopener"><i>Intelligent Power Systems</i></a> · Remote</span></span></li>
+          <li><span class="when" data-i18n="w3">May 2024 – Jan 2025</span><span><b data-i18n="j3">Business Process and Data Quality Analyst</b><span class="org" data-i18n="o3">Cybertexex · Remote</span></span></li>
+          <li><span class="when" data-i18n="w4">Mar 2024 – Oct 2024</span><span><b data-i18n="j4">Research Assistant (volunteer)</b><span class="org" data-i18n="o4">Springer book: <a class="book" href="https://link.springer.com/book/10.1007/978-3-032-10440-3" target="_blank" rel="noopener"><i>Financing the Green Transition</i></a> · Remote</span></span></li>
+          <li><span class="when" data-i18n="w5">Jun 2023 – Mar 2024</span><span><b data-i18n="j5">Customer Success and Technical Support</b><span class="org" data-i18n="o5">TELUS International · Remote</span></span></li>
+          <li><span class="when" data-i18n="w6">Nov 2022 – May 2023</span><span><b data-i18n="j6">Operations Assistant, International Trade</b><span class="org" data-i18n="o6">VEO · Sofia</span></span></li>
         </ul>
       </div>
       <div>
-        <p class="eyebrow">Education</p>
+        <p class="eyebrow" data-i18n="education">Education</p>
         <ul class="rows">
-          <li><span class="when">Sep 2022 – May 2025</span><span><b>MBA, Management Information Systems</b><span class="org">Sofia University St. Kliment Ohridski</span></span></li>
-          <li><span class="when">Sep 2016 – Jun 2021</span><span><b>B.Sc. Civil Engineering</b><span class="org">Istanbul Technical University</span></span></li>
+          <li><span class="when" data-i18n="e1w">Sep 2022 – May 2025</span><span><b data-i18n="e1">MBA, Management Information Systems</b><span class="org" data-i18n="e1o">Sofia University St. Kliment Ohridski</span></span></li>
+          <li><span class="when" data-i18n="e2w">Sep 2016 – Jun 2021</span><span><b data-i18n="e2">B.Sc. Civil Engineering</b><span class="org" data-i18n="e2o">Istanbul Technical University</span></span></li>
         </ul>
       </div>
     </section>
 
-    <footer>Updated November 2026</footer>
+    <footer data-i18n="updated">Updated November 2026</footer>
   </main>
 </div>
 
 <script>
+/* Translations. English is the default and is read from the page itself; only TR and BG are listed here.
+   To translate a new element: give it data-i18n="someKey" and add someKey to tr and bg below. */
+var I18N = {
+  en: {
+    uiLang: 'Language', darkMode: 'Dark mode', lightMode: 'Light mode',
+    copy: 'Copy', copied: 'Copied', selected: 'Selected',
+    zoom: 'Click to enlarge', openApp: 'Open the app →', viewCode: 'View code on GitHub →'
+  },
+  tr: {
+    uiLang: 'Dil', darkMode: 'Gece modu', lightMode: 'Gündüz modu',
+    copy: 'Kopyala', copied: 'Kopyalandı', selected: 'Seçildi',
+    zoom: 'Büyütmek için tıkla', openApp: 'Uygulamayı aç →', viewCode: 'Kodu GitHub\'da gör →',
+    tagline: 'Veri kalitesi uzmanı',
+    kNow: 'Şu an', jobDqa: 'Veri Kalite Güvence Uzmanı',
+    kEdu: 'Eğitim', mbaShort: 'Yönetim Bilişim Sistemleri MBA',
+    kBased: 'Konum', bulgaria: 'Bulgaristan', remote4: 'Yaklaşık 4 yıldır uzaktan çalışıyorum',
+    kLang: 'Diller', langs: 'Türkçe, İngilizce',
+    viewCv: 'CV\'yi gör',
+    about: 'Hakkımda',
+    aboutText: 'Veri kalitesi alanında çalışıyorum, boş zamanlarımda yapay zekâ ile araçlar geliştiriyorum. Araştırma yapmayı, karmaşık fikirleri kolay anlaşılır hale getirmeyi ve işi daha verimli yapmanın yollarını bulmayı seviyorum.',
+    aboutAlso: 'Diğer ilgi alanlarım: yeni teknolojiler, psikoloji ve sağlık, sürdürülebilirlik ve e-ticaret.',
+    projects: 'Projeler', experience: 'Deneyim', education: 'Eğitim',
+    w1: 'May 2023 – Halen', w2: 'Oca 2025 – Oca 2026', w3: 'May 2024 – Oca 2025',
+    w4: 'Mar 2024 – Eki 2024', w5: 'Haz 2023 – Mar 2024', w6: 'Kas 2022 – May 2023',
+    j2: 'Araştırma Ekibi Lideri (gönüllü)', j3: 'İş Süreçleri ve Veri Kalitesi Analisti',
+    j4: 'Araştırma Asistanı (gönüllü)', j5: 'Müşteri Başarısı ve Teknik Destek',
+    j6: 'Operasyon Asistanı, Uluslararası Ticaret',
+    o1: 'Oliant · Uzaktan',
+    o2: 'Wiley-IEEE kitabı: <a class="book" href="https://www.wiley.com/en-jp/shop/general-energy/intelligent-power-systems-a-comprehensive-guide-to-ai-iot-big-data-and-digital-twins-p-9781394474813" target="_blank" rel="noopener"><i>Intelligent Power Systems</i></a> · Uzaktan',
+    o3: 'Cybertexex · Uzaktan',
+    o4: 'Springer kitabı: <a class="book" href="https://link.springer.com/book/10.1007/978-3-032-10440-3" target="_blank" rel="noopener"><i>Financing the Green Transition</i></a> · Uzaktan',
+    o5: 'TELUS International · Uzaktan', o6: 'VEO · Sofya',
+    e1w: 'Eyl 2022 – May 2025', e1: 'MBA, Yönetim Bilişim Sistemleri', e1o: 'Sofya Üniversitesi St. Kliment Ohridski',
+    e2w: 'Eyl 2016 – Haz 2021', e2: 'İnşaat Mühendisliği Lisansı', e2o: 'İstanbul Teknik Üniversitesi',
+    updated: 'Kasım 2026\'da güncellendi'
+  },
+  bg: {
+    uiLang: 'Език', darkMode: 'Тъмен режим', lightMode: 'Светъл режим',
+    copy: 'Копирай', copied: 'Копирано', selected: 'Избрано',
+    zoom: 'Кликни за уголемяване', openApp: 'Отвори приложението →', viewCode: 'Виж кода в GitHub →',
+    tagline: 'Специалист по качество на данните',
+    kNow: 'Сега', jobDqa: 'Специалист по осигуряване на качеството на данните',
+    kEdu: 'Образование', mbaShort: 'MBA по управленски информационни системи',
+    kBased: 'Местоположение', bulgaria: 'България', remote4: 'Работя дистанционно от почти 4 години',
+    kLang: 'Езици', langs: 'турски, английски',
+    viewCv: 'Виж CV',
+    about: 'За мен',
+    aboutText: 'Работя в областта на качеството на данните, а в свободното си време създавам инструменти с изкуствен интелект. Обичам да проучвам, да обяснявам сложни идеи просто и да намирам начини работата да става по-ефективна.',
+    aboutAlso: 'Други интереси: нови технологии, психология и здраве, устойчиво развитие и електронна търговия.',
+    projects: 'Проекти', experience: 'Опит', education: 'Образование',
+    w1: 'май 2023 – сега', w2: 'яну 2025 – яну 2026', w3: 'май 2024 – яну 2025',
+    w4: 'мар 2024 – окт 2024', w5: 'юни 2023 – мар 2024', w6: 'ное 2022 – май 2023',
+    j2: 'Ръководител на изследователски екип (доброволно)', j3: 'Анализатор на бизнес процеси и качество на данните',
+    j4: 'Изследователски асистент (доброволно)', j5: 'Клиентски успех и техническа поддръжка',
+    j6: 'Оперативен асистент, международна търговия',
+    o1: 'Oliant · Дистанционно',
+    o2: 'Книга на Wiley-IEEE: <a class="book" href="https://www.wiley.com/en-jp/shop/general-energy/intelligent-power-systems-a-comprehensive-guide-to-ai-iot-big-data-and-digital-twins-p-9781394474813" target="_blank" rel="noopener"><i>Intelligent Power Systems</i></a> · Дистанционно',
+    o3: 'Cybertexex · Дистанционно',
+    o4: 'Книга на Springer: <a class="book" href="https://link.springer.com/book/10.1007/978-3-032-10440-3" target="_blank" rel="noopener"><i>Financing the Green Transition</i></a> · Дистанционно',
+    o5: 'TELUS International · Дистанционно', o6: 'VEO · София',
+    e1w: 'септ 2022 – май 2025', e1: 'MBA, Управленски информационни системи', e1o: 'Софийски университет „Св. Климент Охридски“',
+    e2w: 'септ 2016 – юни 2021', e2: 'Бакалавър, строително инженерство', e2o: 'Истанбулски технически университет',
+    updated: 'Обновено през ноември 2026'
+  }
+};
+var LANG = 'en';
+var langListeners = [];
+function t(key) { return (I18N[LANG] && I18N[LANG][key]) || I18N.en[key] || ''; }
+/* Project fields can be plain text or { en: '...', tr: '...', bg: '...' } */
+function pick(v) { return (v && typeof v === 'object') ? (v[LANG] || v.en) : v; }
+
+(function () {
+  var root = document.documentElement;
+  var els = document.querySelectorAll('[data-i18n]');
+  els.forEach(function (el) { I18N.en[el.getAttribute('data-i18n')] = I18N.en[el.getAttribute('data-i18n')] || el.innerHTML; });
+
+  function setLang(l) {
+    if (!I18N[l]) l = 'en';
+    LANG = l; root.lang = l;
+    els.forEach(function (el) { el.innerHTML = t(el.getAttribute('data-i18n')); });
+    document.querySelectorAll('.lang button').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-lang') === l ? 'true' : 'false'); });
+    updateThemeText();
+    langListeners.forEach(function (fn) { fn(); });
+  }
+
+  /* Theme */
+  var btn = document.getElementById('themeBtn'), txt = document.getElementById('themeText');
+  var mq = window.matchMedia ? matchMedia('(prefers-color-scheme: dark)') : null;
+  function isDark() { var a = root.getAttribute('data-theme'); return a ? a === 'dark' : !!(mq && mq.matches); }
+  function updateThemeText() { var label = isDark() ? t('lightMode') : t('darkMode'); txt.textContent = label; btn.title = label; }
+  btn.addEventListener('click', function () {
+    var next = isDark() ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem('theme', next); } catch (e) {}
+    updateThemeText();
+  });
+  if (mq && mq.addEventListener) mq.addEventListener('change', updateThemeText);
+
+  document.querySelectorAll('.lang button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var l = b.getAttribute('data-lang');
+      try { localStorage.setItem('lang', l); } catch (e) {}
+      setLang(l);
+    });
+  });
+
+  /* English unless the visitor picked another language before, or the link has ?lang=tr / ?lang=bg */
+  var start = 'en';
+  try { start = localStorage.getItem('lang') || 'en'; } catch (e) {}
+  var q = /[?&]lang=(en|tr|bg)\b/.exec(location.search); if (q) start = q[1];
+  setLang(start);
+})();
+</script>
+
+<script>
 document.getElementById('copyBtn').addEventListener('click', function () {
   var btn = this, el = document.getElementById('email');
-  function fallback() { var r = document.createRange(); r.selectNodeContents(el); var s = getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = 'Selected'; }
-  try { navigator.clipboard.writeText(el.textContent).then(function () { btn.textContent = 'Copied'; }, fallback); } catch (e) { fallback(); }
-  setTimeout(function () { btn.textContent = 'Copy'; }, 2000);
+  function fallback() { var r = document.createRange(); r.selectNodeContents(el); var s = getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent = t('selected'); }
+  try { navigator.clipboard.writeText(el.textContent).then(function () { btn.textContent = t('copied'); }, fallback); } catch (e) { fallback(); }
+  setTimeout(function () { btn.textContent = t('copy'); }, 2000);
 });
 </script>
 
 <script>
 /* To add a project: copy a block below. Put screenshots next to index.html and list them.
-   links: buttons under the text (first one is filled, the rest outlined). */
+   title, description and note can be plain English text or { en, tr, bg }.
+   links: buttons under the text (first one is filled, the rest outlined). label can be "openApp", "viewCode" or your own text. */
 var PROJECTS = [
   {
-    title: "Pano: Seller Panel",
-    description: "A sales panel for sellers, mainly online shops: revenue, best sellers, stock, suppliers and ad spend in one place, from a sales file or sales typed in by hand. Staff see only what you allow. An AI agent for competitor prices is built in but kept off so the app stays free.",
-    note: "Built with Claude: I designed it and guided each step; Claude wrote the code. The code is private, so the button opens the live app.",
+    title: { en: "Pano: Seller Panel", tr: "Pano: Satıcı Paneli", bg: "Pano: Панел за търговци" },
+    description: {
+      en: "A sales panel for sellers, mainly online shops: revenue, best sellers, stock, suppliers and ad spend in one place, from a sales file or sales typed in by hand. Staff see only what you allow. An AI agent for competitor prices is built in but kept off so the app stays free.",
+      tr: "Satıcılar, özellikle online mağazalar için bir satış paneli: ciro, en çok satanlar, stok, tedarikçiler ve reklam harcaması tek yerde; ister satış dosyasından ister elle girilen satışlardan. Çalışanlar yalnızca izin verdiğiniz kısımları görür. Rakip fiyatları için bir AI ajanı hazır ama uygulama ücretsiz kalsın diye kapalı.",
+      bg: "Панел за продажби за търговци, най-вече онлайн магазини: оборот, най-продавани продукти, наличности, доставчици и разходи за реклама на едно място, от файл с продажби или от ръчно въведени продажби. Служителите виждат само това, което разрешите. Вграден е AI агент за цените на конкурентите, но е изключен, за да остане приложението безплатно."
+    },
+    note: {
+      en: "Built with Claude: I designed it and guided each step; Claude wrote the code. The code is private, so the button opens the live app.",
+      tr: "Claude ile geliştirildi: tasarladım ve her adımı yönlendirdim; kodu Claude yazdı. Kod gizli olduğu için buton canlı uygulamayı açıyor.",
+      bg: "Създадено с Claude: аз го проектирах и насочвах всяка стъпка, а Claude написа кода. Кодът е частен, затова бутонът отваря работещото приложение."
+    },
     tools: ["JavaScript", "Vite", "Supabase", "PostgreSQL", "Cloudflare Workers", "Claude API", "PWA", "IndexedDB"],
     images: ["pano-01.webp","pano-02.webp","pano-03.webp","pano-04.webp","pano-05.webp","pano-06.webp","pano-07.webp","pano-08.webp","pano-09.webp","pano-10.webp","pano-11.webp","pano-12.webp"],
-    links: [{ label: "Open the app →", url: "https://seller-panel.alperhasankizik.workers.dev/" }]
+    links: [{ label: "openApp", url: "https://seller-panel.alperhasankizik.workers.dev/" }]
   },
   {
     title: "Shopify CRO Checker",
-    description: "A desktop app that audits a Shopify store the way a CRO team does. It runs 27 checks, opens the page in a real phone browser and marks what to change, ranks each idea by priority, and writes briefs and A/B test plans.",
-    note: "Built with Claude. I designed the logic, the visuals and how it should work, and guided each step with my prompts; Claude wrote the code.",
+    description: {
+      en: "A desktop app that audits a Shopify store the way a CRO team does. It runs 27 checks, opens the page in a real phone browser and marks what to change, ranks each idea by priority, and writes briefs and A/B test plans.",
+      tr: "Bir Shopify mağazasını CRO ekibinin yaptığı gibi denetleyen bir masaüstü uygulaması. 27 kontrol yapıyor, sayfayı gerçek bir telefon tarayıcısında açıp neyin değişmesi gerektiğini işaretliyor, her fikri önceliğe göre sıralıyor, brief'ler ve A/B test planları yazıyor.",
+      bg: "Десктоп приложение, което проверява Shopify магазин така, както го прави CRO екип. Прави 27 проверки, отваря страницата в истински мобилен браузър и отбелязва какво да се промени, подрежда всяка идея по приоритет и пише брифове и планове за A/B тестове."
+    },
+    note: {
+      en: "Built with Claude. I designed the logic, the visuals and how it should work, and guided each step with my prompts; Claude wrote the code.",
+      tr: "Claude ile geliştirildi. Mantığı, görselleri ve nasıl çalışacağını ben tasarladım, her adımı prompt'larımla yönlendirdim; kodu Claude yazdı.",
+      bg: "Създадено с Claude. Аз проектирах логиката, визията и как да работи и насочвах всяка стъпка с моите промптове; Claude написа кода."
+    },
     tools: ["Python", "Tkinter", "Playwright", "BeautifulSoup", "PageSpeed API", "Claude API"],
     images: ["cro-01.webp","cro-02.webp","cro-03.webp","cro-04.webp","cro-05.webp","cro-06.webp","cro-07.webp","cro-08.webp","cro-09.webp","cro-10.webp","cro-11.webp"],
-    links: [{ label: "Open the app →", url: "https://shopify-cro-checker.streamlit.app/" }, { label: "View code on GitHub →", url: "https://github.com/akizik1/shopify-cro-checker" }]
+    links: [{ label: "openApp", url: "https://shopify-cro-checker.streamlit.app/" }, { label: "viewCode", url: "https://github.com/akizik1/shopify-cro-checker" }]
   }
 ];
 (function () {
@@ -291,7 +474,7 @@ var PROJECTS = [
       next.onclick = function (e) { e.stopPropagation(); show(i + 1); restart(); };
       frame.append(d, prev, next);
     }
-    var hint = document.createElement('span'); hint.className = 'zoom-hint'; hint.textContent = 'Click to enlarge'; frame.appendChild(hint);
+    var hint = document.createElement('span'); hint.className = 'zoom-hint'; frame.appendChild(hint);
     frame.addEventListener('mouseenter', function () { paused = true; restart(); });
     frame.addEventListener('mouseleave', function () { paused = false; restart(); });
     frame.addEventListener('click', function () {
@@ -301,19 +484,29 @@ var PROJECTS = [
     restart();
 
     var text = document.createElement('div'); text.className = 'text';
-    var h = document.createElement('h3'); h.textContent = p.title;
-    var ds = document.createElement('p'); ds.textContent = p.description;
+    var h = document.createElement('h3');
+    var ds = document.createElement('p');
     text.append(h, ds);
-    if (p.note) { var n = document.createElement('p'); n.className = 'note'; n.textContent = p.note; text.appendChild(n); }
-    var t = document.createElement('div'); t.className = 'tools';
-    p.tools.forEach(function (x) { var s = document.createElement('span'); s.textContent = x; t.appendChild(s); });
-    text.appendChild(t);
-    var links = p.links || (p.link ? [{ label: 'View code on GitHub →', url: p.link }] : []);
+    var n = null;
+    if (p.note) { n = document.createElement('p'); n.className = 'note'; text.appendChild(n); }
+    var tl = document.createElement('div'); tl.className = 'tools';
+    p.tools.forEach(function (x) { var s = document.createElement('span'); s.textContent = x; tl.appendChild(s); });
+    text.appendChild(tl);
+    var links = p.links || (p.link ? [{ label: 'viewCode', url: p.link }] : []);
+    var anchors = [];
     if (links.length) {
       var row = document.createElement('div'); row.className = 'links';
-      links.forEach(function (l, k) { var a = document.createElement('a'); a.className = k ? 'more alt' : 'more'; a.href = l.url; a.target = '_blank'; a.rel = 'noopener'; a.textContent = l.label; row.appendChild(a); });
+      links.forEach(function (l, k) { var a = document.createElement('a'); a.className = k ? 'more alt' : 'more'; a.href = l.url; a.target = '_blank'; a.rel = 'noopener'; row.appendChild(a); anchors.push(a); });
       text.appendChild(row);
     }
+    function fill() {
+      h.textContent = pick(p.title);
+      ds.textContent = pick(p.description);
+      if (n) n.textContent = pick(p.note);
+      hint.textContent = t('zoom');
+      anchors.forEach(function (a, k) { var lb = pick(links[k].label); a.textContent = t(lb) || lb; });
+    }
+    fill(); langListeners.push(fill);
     card.append(frame, text); list.appendChild(card);
   });
 })();
