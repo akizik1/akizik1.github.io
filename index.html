@@ -7,7 +7,7 @@
 <title>Alper Kizik Portfolio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=Archivo:wdth,wght@125,500;125,600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&display=swap">
 <style>
 /* Layout: full-height dark identity panel on the left (who, links), light work area on the right (about, project, timeline). On phones the panel becomes the top band. */
 :root {
@@ -24,8 +24,7 @@
   --shot-bg: #f6f7f8;
   --font-display: "Inter Tight", "Helvetica Neue", Arial, sans-serif;
   --font-body: "Inter Tight", "Segoe UI", Roboto, Arial, sans-serif;
-  /* small uppercase labels: wide grotesk */
-  --font-mono: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "Inter Tight", "Segoe UI", Roboto, Arial, sans-serif;
 }
 :root[data-theme="dark"] {
   --paper: #0e151c; --surface: #16202a; --ink: #e7edf2; --muted: #98a6b3; --line: #273440;
@@ -56,7 +55,7 @@ h1 { font-family: var(--font-display); font-weight: 600; font-size: 34px; line-h
 .facts li { display: grid; gap: 1px; }
 .facts .k { margin-bottom: 1px; }
 .facts .sub { color: var(--side-muted); font-size: 13px; }
-.facts .k { font-family: var(--font-mono); font-stretch: 125%; font-weight: 500; font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--side-muted); }
+.facts .k { font-family: var(--font-mono); font-weight: 500; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--side-muted); }
 .buttons { display: flex; flex-wrap: wrap; gap: 8px; }
 .btn { font: 500 14px var(--font-body); text-decoration: none; padding: 8px 14px; border-radius: 8px; border: 1px solid var(--side-line); color: var(--side-fg); background: transparent; }
 .btn:hover { border-color: var(--side-muted); }
@@ -98,7 +97,7 @@ main {
 .rows { list-style: none; margin: 0; padding: 0; display: grid; }
 .rows li { display: grid; grid-template-columns: 142px minmax(0, 1fr); gap: 12px; padding: 9px 0; border-top: 1px solid var(--line); }
 .rows li:last-child { border-bottom: 1px solid var(--line); }
-.when { white-space: nowrap; font-family: var(--font-mono); font-stretch: 125%; font-size: 11px; color: var(--muted); padding-top: 2px; font-variant-numeric: tabular-nums; }
+.when { white-space: nowrap; font-family: var(--font-mono); font-size: 13px; color: var(--muted); padding-top: 2px; font-variant-numeric: tabular-nums; }
 .rows b { font-weight: 600; display: block; }
 .rows .org { color: var(--muted); font-size: 14px; }
 .rows .book { white-space: nowrap; }
@@ -145,7 +144,7 @@ footer { font-size: 12px; color: var(--muted); }
   display: flex; align-items: center; gap: 6px; padding: 4px; border-radius: 999px;
   background: var(--surface); border: 1px solid var(--line); box-shadow: 0 2px 10px rgba(8,12,16,.12); }
 .lang { display: flex; gap: 2px; }
-.lang button { font: 600 11px var(--font-mono); font-stretch: 125%; letter-spacing: .04em; color: var(--muted); background: transparent; border: 0; border-radius: 999px; padding: 6px 10px; cursor: pointer; }
+.lang button { font: 500 12px var(--font-mono); letter-spacing: .02em; color: var(--muted); background: transparent; border: 0; border-radius: 999px; padding: 6px 10px; cursor: pointer; }
 .lang button:hover { color: var(--ink); }
 .lang button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
 .prefs .sep { width: 1px; height: 18px; background: var(--line); }
