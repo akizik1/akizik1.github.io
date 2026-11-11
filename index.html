@@ -83,6 +83,7 @@ main {
 .dots button { pointer-events: auto; width: 7px; height: 7px; padding: 0; border-radius: 50%; border: 1px solid #fff; background: rgba(19,32,43,.3); cursor: pointer; }
 .dots button.on { background: #13202b; }
 .project h3 { font-family: var(--font-display); font-weight: 600; font-size: 24px; line-height: 1.2; letter-spacing: -.02em; margin: 0 0 8px; }
+.soon { display: inline-block; font: 500 12px var(--font-mono); letter-spacing: .02em; color: var(--ink); border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; margin-bottom: 10px; }
 .project p { margin: 0 0 14px; color: var(--muted); font-size: 15px; }
 .project p.note { font-size: 13px; border-left: 2px solid var(--line); padding-left: 10px; }
 .tools { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
@@ -375,8 +376,25 @@ document.getElementById('copyBtn').addEventListener('click', function () {
 <script>
 /* To add a project: copy a block below. Put screenshots next to index.html and list them.
    title, description and note can be plain English text or { en, tr, bg }.
+   soon: optional badge above the title for something not released yet, e.g. "Coming soon to mobile stores".
    links: buttons under the text (first one is filled, the rest outlined). label can be "openApp", "viewCode" or your own text. */
 var PROJECTS = [
+  {
+    title: { en: "GeziMap: Way Tracker", tr: "GeziMap: Seyahat Haritam", bg: "GeziMap: Карта на пътуванията" },
+    soon: { en: "Coming soon to mobile stores", tr: "Yakında mobil mağazalarda", bg: "Очаквайте скоро в мобилните магазини" },
+    description: {
+      en: "A mobile app that keeps every place you have been on one map. Add a trip by motorcycle, car, plane, train, bus or ship: countries fill in, routes are drawn, and each country earns a passport stamp. Share your map as a poster, keep a garage of your vehicles, and run a club with announcements, events and chat. In 21 languages.",
+      tr: "Gittiğin her yeri tek haritada tutan bir mobil uygulama. Motor, araba, uçak, tren, otobüs ya da gemiyle bir seyahat ekle: ülkeler boyanır, rotalar çizilir, her ülke pasaportuna bir damga bırakır. Haritanı poster olarak paylaş, araçlarını garajında tut, kulübünü duyurular, etkinlikler ve sohbetle yönet. 21 dilde.",
+      bg: "Мобилно приложение, което пази всяко място, където си бил, на една карта. Добави пътуване с мотор, кола, самолет, влак, автобус или кораб: държавите се оцветяват, маршрутите се чертаят, а всяка държава оставя печат в паспорта ти. Сподели картата си като постер, пази превозните си средства в гараж и управлявай клуб с обяви, събития и чат. На 21 езика."
+    },
+    note: {
+      en: "Built with Claude: I designed it and guided each step; Claude wrote the code. The code is private.",
+      tr: "Claude ile geliştirildi: tasarladım ve her adımı yönlendirdim; kodu Claude yazdı. Kod gizli.",
+      bg: "Създадено с Claude: аз го проектирах и насочвах всяка стъпка, а Claude написа кода. Кодът е частен."
+    },
+    tools: ["React Native", "Expo", "TypeScript", "Supabase", "PostgreSQL", "Google Play Billing"],
+    images: ["gezimap-01.webp","gezimap-02.webp","gezimap-03.webp","gezimap-04.webp"]
+  },
   {
     title: { en: "Pano: Seller Panel", tr: "Pano: Satıcı Paneli", bg: "Pano: Панел за търговци" },
     description: {
@@ -442,7 +460,7 @@ var PROJECTS = [
     var frame = document.createElement('div'); frame.className = 'frame';
     var imgs = [], dots = [], i = 0, timer = null, paused = false;
     p.images.forEach(function (src, k) {
-      var im = document.createElement('img'); im.src = src; im.alt = p.title + ' screenshot ' + (k + 1);
+      var im = document.createElement('img'); im.src = src; im.alt = (p.title.en || p.title) + ' screenshot ' + (k + 1);
       if (k === 0) im.className = 'on'; frame.appendChild(im); imgs.push(im);
     });
     function show(k) {
@@ -474,6 +492,8 @@ var PROJECTS = [
     restart();
 
     var text = document.createElement('div'); text.className = 'text';
+    var sn = null;
+    if (p.soon) { sn = document.createElement('span'); sn.className = 'soon'; text.appendChild(sn); }
     var h = document.createElement('h3');
     var ds = document.createElement('p');
     text.append(h, ds);
@@ -493,6 +513,7 @@ var PROJECTS = [
       h.textContent = pick(p.title);
       ds.textContent = pick(p.description);
       if (n) n.textContent = pick(p.note);
+      if (sn) sn.textContent = pick(p.soon);
       hint.textContent = t('zoom');
       anchors.forEach(function (a, k) { var lb = pick(links[k].label); a.textContent = t(lb) || lb; });
     }
