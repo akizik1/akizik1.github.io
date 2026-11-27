@@ -253,11 +253,19 @@ footer.site { padding-block: 32px 48px; font-size: 13px; color: var(--muted-fore
 .dog-show { position: fixed; inset: 0; z-index: 35; display: grid; place-items: center; pointer-events: none;
   background: rgba(6, 6, 12, .58); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); opacity: 0; transition: opacity .6s ease; }
 .dog-show.on { opacity: 1; }
-.dog-show img { grid-area: 1 / 1; max-width: min(78vw, 560px); max-height: 72vh; border-radius: 18px; object-fit: contain;
-  box-shadow: 0 30px 80px -20px rgba(0,0,0,.7); opacity: 0; transform: scale(.97); filter: saturate(.95);
-  transition: opacity 1.6s ease, transform 4.6s ease-out; }
-.dog-show img.show { opacity: .88; transform: scale(1.03); }
-@media (prefers-reduced-motion: reduce) { .dog-show img { transition: opacity .3s; transform: none !important; } }
+/* Each photo is a white-bordered card that turns in like an album page, at its own angle and spot;
+   older cards stay underneath, faded, then disappear */
+.dog-show { perspective: 1400px; }
+.photo-card { grid-area: 1 / 1; margin: 0; padding: 10px 10px 34px; background: #fbfaf7; border-radius: 6px;
+  box-shadow: 0 24px 60px -18px rgba(0,0,0,.75), 0 2px 6px rgba(0,0,0,.25);
+  opacity: 0; transform-origin: var(--ox, 0%) 50%;
+  transform: translate(var(--x), var(--y)) rotate(var(--r)) rotateY(var(--fy, -75deg)) scale(.92);
+  transition: transform 1.3s cubic-bezier(.2,.75,.25,1), opacity 1s ease, filter 1s ease; }
+.photo-card img { display: block; max-width: min(66vw, 440px); max-height: 60vh; border-radius: 2px; object-fit: cover; }
+.photo-card.in { opacity: .92; transform: translate(var(--x), var(--y)) rotate(var(--r)) rotateY(0) scale(1); }
+.photo-card.under { opacity: .45; filter: blur(1.5px) saturate(.8); transform: translate(var(--x), var(--y)) rotate(var(--r)) rotateY(0) scale(.95); }
+.photo-card.out { opacity: 0; transform: translate(var(--x), calc(var(--y) + 30px)) rotate(var(--r)) scale(.9); }
+@media (prefers-reduced-motion: reduce) { .photo-card { transition: opacity .4s; transform: rotate(var(--r)) !important; } }
 
 /* Baileys: a round photo badge in the bottom right corner */
 .baileys { position: fixed; z-index: 40; right: max(20px, env(safe-area-inset-right, 0px)); bottom: max(20px, env(safe-area-inset-bottom, 0px)); }
@@ -501,7 +509,7 @@ footer.site { padding-block: 20px 40px; }
 </div>
 
 <!-- Baileys' photos drift across a dimmed screen while you hover over him -->
-<div class="dog-show" id="dogShow" aria-hidden="true"><img alt=""><img alt=""></div>
+<div class="dog-show" id="dogShow" aria-hidden="true"></div>
 <!-- Baileys: our dog naps in the corner; hover (or tap) to wake him up -->
 <div class="baileys" id="baileys">
   <span class="zzz" aria-hidden="true"><i>z</i><i>z</i><i>z</i></span>
@@ -977,7 +985,7 @@ var showProject;
      The photos come from the images/baileys/gallery folder of the GitHub repo, so new photos appear
      as soon as they are uploaded there (JPG, PNG, WEBP or GIF). If GitHub can't be reached, the list below is used. */
   var FOLDER = 'images/baileys/gallery', FALLBACK = ['baileys-1.webp', 'baileys-2.webp', 'baileys-3.webp', 'baileys-4.webp'], cache = null;
-  var SLIDE_MS = 3800;
+  var SLIDE_MS = 3200;
   function photoList() {
     if (cache) return Promise.resolve(cache);
     return fetch('https://api.github.com/repos/akizik1/akizik1.github.io/contents/' + FOLDER + '?ref=main', { headers: { Accept: 'application/vnd.github+json' } })
@@ -991,16 +999,33 @@ var showProject;
       })
       .catch(function () { return (cache = FALLBACK); });
   }
-  var show = document.getElementById('dogShow'), layers = show.querySelectorAll('img');
-  var playing = false, idx = 0, front = 0, timer = 0, srcs = [];
+  var show = document.getElementById('dogShow');
+  var playing = false, idx = 0, timer = 0, srcs = [], side = 1;
   function url(n) { return FOLDER + '/' + encodeURIComponent(n); }
+  function rnd(a, b) { return a + Math.random() * (b - a); }
   function next() {
     if (!playing || !srcs.length) return;
-    var back = 1 - front, img = layers[back], src = url(srcs[idx % srcs.length]);
-    idx++;
-    function swap() { if (!playing) return; img.classList.add('show'); layers[front].classList.remove('show'); front = back; }
-    img.classList.remove('show');
-    if (img.getAttribute('src') === src && img.complete) swap(); else { img.onload = swap; img.src = src; }
+    var src = url(srcs[idx % srcs.length]); idx++;
+    var pic = new Image();
+    pic.onload = function () {
+      if (!playing) return;
+      /* older cards: the last one fades under the new one, anything older slides away */
+      var cards = show.querySelectorAll('.photo-card:not(.out)');
+      cards.forEach(function (c, k) {
+        if (k < cards.length - 1) { c.classList.add('out'); setTimeout(function () { c.remove(); }, 1100); }
+        else { c.classList.remove('in'); c.classList.add('under'); }
+      });
+      side = -side;
+      var card = document.createElement('figure'); card.className = 'photo-card';
+      card.style.setProperty('--x', rnd(-70, 70).toFixed(0) + 'px');
+      card.style.setProperty('--y', rnd(-30, 25).toFixed(0) + 'px');
+      card.style.setProperty('--r', rnd(-8, 8).toFixed(1) + 'deg');
+      card.style.setProperty('--fy', (side * 80) + 'deg');
+      card.style.setProperty('--ox', side > 0 ? '100%' : '0%');
+      pic.alt = ''; card.appendChild(pic); show.appendChild(card);
+      void card.offsetWidth; card.classList.add('in');
+    };
+    pic.src = src;
     var pre = new Image(); pre.src = url(srcs[idx % srcs.length]);
     timer = setTimeout(next, SLIDE_MS);
   }
@@ -1012,7 +1037,7 @@ var showProject;
   function stop() {
     playing = false; clearTimeout(timer); timer = 0;
     box.classList.remove('awake'); show.classList.remove('on');
-    setTimeout(function () { if (!playing) layers.forEach(function (l) { l.classList.remove('show'); }); }, 600);
+    setTimeout(function () { if (!playing) show.innerHTML = ''; }, 650);
   }
   var hoverable = window.matchMedia && matchMedia('(hover: hover)').matches;
   btn.addEventListener('mouseenter', function () { if (hoverable) start(); });
