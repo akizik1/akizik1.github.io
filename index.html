@@ -85,63 +85,55 @@ button { font-family: inherit; }
 .badge { display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; font: 500 12px/1 var(--font); border: 1px solid var(--border); color: var(--muted-foreground); background: transparent; }
 .badge-secondary { background: var(--muted); border-color: transparent; color: var(--foreground); }
 
-/* Header */
-header.site { position: sticky; top: 0; z-index: 30; background: color-mix(in srgb, var(--background) 82%, transparent); backdrop-filter: saturate(1.6) blur(10px); -webkit-backdrop-filter: saturate(1.6) blur(10px); border-bottom: 1px solid transparent; transition: border-color .2s; }
-header.site.scrolled { border-bottom-color: var(--border); }
-.bar { display: flex; align-items: center; gap: 8px; height: 60px; }
-.brand { font-weight: 600; font-size: 15px; color: var(--foreground); text-decoration: none; margin-right: 12px; letter-spacing: -.01em; }
-.nav { display: flex; gap: 2px; }
-.nav a { color: var(--muted-foreground); text-decoration: none; font-size: 14px; font-weight: 500; padding: 6px 10px; border-radius: 6px; transition: color .15s; }
-.nav a:hover, .nav a[aria-current="true"] { color: var(--foreground); }
-.bar .spacer { flex: 1; }
-.search-btn { justify-content: space-between; width: 220px; color: var(--muted-foreground); font-weight: 400; }
-.search-btn span.l { display: inline-flex; align-items: center; gap: 8px; }
-/* Language buttons + theme button: always visible, written out in words */
-.prefs { display: flex; align-items: center; gap: 6px; }
-.lang { display: inline-flex; align-items: center; gap: 2px; padding: 3px; background: var(--muted); border-radius: var(--radius); }
-.lang-label { display: inline-flex; padding: 0 6px 0 5px; color: var(--muted-foreground); }
+/* Settings pill, top right (search, language, theme) */
+.topbar { position: fixed; z-index: 30; top: max(14px, env(safe-area-inset-top, 0px)); right: max(18px, env(safe-area-inset-right, 0px));
+  display: flex; align-items: center; gap: 4px; padding: 4px; border-radius: 999px; background: color-mix(in srgb, var(--card) 88%, transparent);
+  border: 1px solid var(--border); box-shadow: 0 4px 18px -6px rgba(15,23,42,.18); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+.topbar .sep { width: 1px; height: 18px; background: var(--border); }
+.topbar .btn { border-radius: 999px; }
+.search-btn { color: var(--muted-foreground); font-weight: 400; gap: 6px; }
+.lang { display: inline-flex; align-items: center; gap: 2px; }
+.lang-label { display: inline-flex; padding: 0 4px 0 6px; color: var(--muted-foreground); }
 .lang-label svg { width: 15px; height: 15px; }
-.lang button { height: 28px; padding: 0 10px; border: 0; border-radius: calc(var(--radius) - 3px); background: transparent; color: var(--muted-foreground); font: 500 13px/1 var(--font); cursor: pointer; transition: background-color .15s, color .15s; }
+.lang button { height: 28px; padding: 0 10px; border: 0; border-radius: 999px; background: transparent; color: var(--muted-foreground); font: 500 13px/1 var(--font); cursor: pointer; transition: background-color .15s, color .15s; }
 .lang button:hover { color: var(--foreground); }
-.lang button[aria-pressed="true"] { background: var(--card); color: var(--accent-foreground); box-shadow: 0 1px 3px rgba(15,23,42,.12); }
+.lang button[aria-pressed="true"] { background: var(--primary); color: var(--primary-foreground); }
 .theme-btn { color: var(--muted-foreground); }
 .theme-btn:hover { color: var(--foreground); }
 .theme-btn .sun { display: none; }
 :root[data-theme="dark"] .theme-btn .sun { display: block; }
 :root[data-theme="dark"] .theme-btn .moon { display: none; }
 
-/* Layout: profile column on the left (sticky), work on the right, so projects are the first thing people see */
-.bar, .layout { width: 100%; max-width: 1360px; margin-inline: auto; padding-inline: max(24px, env(safe-area-inset-left, 0px)) max(24px, env(safe-area-inset-right, 0px)); }
-.layout { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 56px; align-items: start; }
-.profile { position: sticky; top: 60px; max-height: calc(100vh - 60px); overflow-y: auto; padding-block: 28px; scrollbar-width: none; }
+/* Layout (like the first version): a full-height profile column on the left that fits the screen, work on the right */
+.layout { display: grid; grid-template-columns: clamp(290px, 23vw, 370px) minmax(0, 1fr); min-height: 100vh; }
+.profile { position: sticky; top: 0; height: 100vh; overflow-y: auto; scrollbar-width: none; display: flex; flex-direction: column; gap: clamp(12px, 2vh, 20px);
+  padding: clamp(18px, 3.2vh, 32px) 28px; background: var(--card); border-right: 1px solid var(--border); }
 .profile::-webkit-scrollbar { display: none; }
-.profile-inner { display: grid; gap: 18px; }
-.profile .cta .btn { height: 34px; padding: 0 12px; font-size: 13px; }
-main { min-width: 0; }
-main .container { max-width: none; padding-inline: 0; }
-.avatar { width: 100%; aspect-ratio: 3 / 2; border-radius: calc(var(--radius) + 6px); overflow: hidden; border: 1px solid var(--border); background: var(--muted); }
-.avatar img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 28%; display: block; }
-.profile h1 { font-size: 34px; font-weight: 600; line-height: 1.05; letter-spacing: -.04em; margin: 0 0 6px; }
-.profile .tagline { margin: 0; font-size: 16px; color: var(--muted-foreground); }
-.profile .about { margin: 0; font-size: 15px; line-height: 1.65; text-wrap: pretty; }
-.profile .also { margin: 0; font-size: 13px; color: var(--muted-foreground); }
-.cta { display: flex; flex-wrap: wrap; gap: 8px; }
-.profile-extra { display: grid; gap: 18px; }
-.profile-more { display: none; align-items: center; gap: 6px; justify-self: start; border: 0; background: none; padding: 0; color: var(--foreground); font: 500 14px var(--font); cursor: pointer; }
-.profile-more svg { width: 16px; height: 16px; transition: transform .2s; }
-.profile-more[aria-expanded="true"] svg { transform: rotate(180deg); }
-.facts { margin: 0; padding-top: 18px; border-top: 1px solid var(--border); display: grid; gap: 12px; font-size: 14px; line-height: 1.4; }
-.facts div { display: grid; gap: 2px; }
-.facts dt { color: var(--muted-foreground); font-size: 13px; }
+.avatar { flex: none; width: 100%; aspect-ratio: 4 / 3; max-height: 30vh; border-radius: calc(var(--radius) + 6px); overflow: hidden; background: var(--muted); }
+.avatar img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 36%; transform: scale(1.3); transform-origin: 50% 46%; display: block; }
+.profile h1 { font-size: clamp(28px, 2.4vw, 34px); font-weight: 600; line-height: 1.05; letter-spacing: -.04em; margin: 0 0 4px; }
+.profile .tagline { margin: 0; font-size: 15px; color: var(--muted-foreground); }
+.facts { margin: 0; padding-top: clamp(12px, 2vh, 18px); border-top: 1px solid var(--border); display: grid; gap: clamp(8px, 1.4vh, 12px); font-size: 14px; line-height: 1.35; }
+.facts div { display: grid; gap: 1px; }
+.facts dt { color: var(--muted-foreground); font-size: 12.5px; }
 .facts dd { margin: 0; font-weight: 500; }
-.facts dd small { display: block; font-weight: 400; color: var(--muted-foreground); font-size: 13px; }
+.facts dd small { display: block; font-weight: 400; color: var(--muted-foreground); font-size: 12.5px; }
+.cta { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: auto; }
+.cta .btn { height: 36px; padding: 0 10px; font-size: 13px; }
+main { min-width: 0; padding: 72px clamp(24px, 4vw, 64px) 0; }
+main .container { max-width: 1100px; margin-inline: auto; padding-inline: 0; }
+.about-block h2 { margin: 0 0 12px; font-size: 28px; font-weight: 600; letter-spacing: -.03em; }
+.about-block .about { margin: 0; font-size: 19px; line-height: 1.6; max-width: 62ch; text-wrap: pretty; }
+.about-block .also { margin: 12px 0 0; font-size: 15px; color: var(--muted-foreground); max-width: 70ch; }
+.bg-grid { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr); gap: 48px; }
+.bg-grid h2 { margin: 0 0 22px; font-size: 28px; font-weight: 600; letter-spacing: -.03em; }
 .reveal { opacity: 0; transform: translateY(8px); animation: rise .6s cubic-bezier(.2,.7,.2,1) forwards; }
 .reveal.d2 { animation-delay: .08s; } .reveal.d3 { animation-delay: .16s; }
 @keyframes rise { to { opacity: 1; transform: none; } }
 
 /* Section heads */
 section.block { padding-block: 56px; border-top: 1px solid var(--border); }
-main > section.block:first-child { border-top: 0; padding-top: 32px; }
+main > section.block:first-child { border-top: 0; padding-top: 8px; }
 .head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 16px; margin-bottom: 28px; }
 .head h2 { margin: 0; font-size: 28px; font-weight: 600; letter-spacing: -.03em; line-height: 1.15; }
 .head p { margin: 6px 0 0; color: var(--muted-foreground); }
@@ -189,8 +181,8 @@ main > section.block:first-child { border-top: 0; padding-top: 32px; }
 .links { display: flex; flex-wrap: wrap; gap: 8px; padding-top: 2px; }
 
 /* Timeline */
-.timeline { list-style: none; margin: 0; padding: 0; display: grid; max-width: 760px; }
-.timeline li { position: relative; display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 20px; padding: 0 0 26px 26px; }
+.timeline { list-style: none; margin: 0; padding: 0; display: grid; }
+.timeline li { position: relative; display: grid; gap: 2px; padding: 0 0 24px 26px; }
 .timeline li::before { content: ""; position: absolute; left: 4px; top: 8px; width: 9px; height: 9px; border-radius: 50%; background: var(--background); border: 2px solid var(--muted-foreground); }
 .timeline li:first-child::before { background: var(--primary); border-color: var(--primary); }
 .timeline li::after { content: ""; position: absolute; left: 8px; top: 22px; bottom: 2px; width: 1px; background: var(--border); }
@@ -255,23 +247,24 @@ footer.site { padding-block: 32px 48px; font-size: 13px; color: var(--muted-fore
 
 /* Baileys */
 .dog-lane { position: fixed; left: 0; right: 0; bottom: 0; height: 0; z-index: 25; pointer-events: none; }
+.cushion { position: absolute; right: 22px; bottom: 0; width: 160px; height: 44px; }
 .dog { position: absolute; left: 0; bottom: 2px; width: 120px; will-change: transform; }
 .dog-btn { position: relative; display: block; width: 120px; height: 96px; padding: 0; border: 0; background: none; cursor: pointer; pointer-events: auto; border-radius: 12px; }
 .dog-flip { position: absolute; inset: 0; display: block; transition: transform .25s ease; }
-.dog-svg { width: 100%; height: 100%; display: block; overflow: visible; filter: drop-shadow(0 0 .6px rgba(74,37,25,.75)); }
+.dog-svg { width: 100%; height: 100%; display: block; overflow: visible; filter: drop-shadow(0 0 .6px rgba(58,27,19,.7)); }
 .dog-svg * { transform-box: view-box; }
 .dog-shadow { fill: rgba(15,23,42,.13); }
 :root[data-theme="dark"] .dog-shadow { fill: rgba(0,0,0,.45); }
-/* pivots: shoulders, hips, tail base, ear, neck */
 .dog-svg .leg-nf { transform-origin: 117px 68px; } .dog-svg .leg-ff { transform-origin: 108px 68px; }
 .dog-svg .leg-nh { transform-origin: 50px 72px; } .dog-svg .leg-fh { transform-origin: 58px 72px; }
 .dog-svg .tail { transform-origin: 45px 56px; animation: wag 1.1s ease-in-out infinite; }
 .dog-svg .ear { transform-origin: 133px 16px; }
-.dog-svg .head { transform-origin: 124px 38px; transition: transform .35s ease; }
+.dog-svg .head { transform-origin: 124px 38px; transition: transform .4s ease; }
 .dog-svg .eye { transform-origin: 139.6px 18.4px; animation: blink 4.5s infinite; }
-.dog-svg .body { transform-origin: 86px 121px; transition: transform .3s ease; }
-.dog-svg .leg { transition: transform .25s ease; }
-/* Walking and running: legs step in diagonal pairs, body bobs, ear swings, tail wags faster */
+.dog-svg .eye-shut { opacity: 0; }
+.dog-svg .body { transform-origin: 86px 121px; transition: transform .4s ease; }
+.dog-svg .leg { transition: transform .25s ease, opacity .3s ease; }
+/* Walking and running */
 .dog.walk .leg-nf, .dog.walk .leg-fh { animation: stepA .62s ease-in-out infinite; }
 .dog.walk .leg-ff, .dog.walk .leg-nh { animation: stepB .62s ease-in-out infinite; }
 .dog.walk .body { animation: bob .31s ease-in-out infinite; }
@@ -283,15 +276,25 @@ footer.site { padding-block: 32px 48px; font-size: 13px; color: var(--muted-fore
 .dog.run .body { animation: gallop .34s ease-in-out infinite; }
 .dog.run .ear { animation: earSwing .34s ease-in-out infinite; }
 .dog.run .tail { animation-duration: .3s; }
-/* Standing: breathing and a slow tail */
+/* Standing */
 .dog.stand .body { animation: breathe 3.4s ease-in-out infinite; }
 .dog.sniff .head { transform: rotate(24deg) translateY(4px); }
-.dog.sniff .tail { animation-duration: .7s; }
 .dog.tilt .head { transform: rotate(-12deg); }
-/* Happy: little hops and a very fast tail */
 .dog.happy .tail { animation-duration: .16s; }
 .dog.happy .body { animation: happyHop .45s ease-in-out 4; }
-.dog.jump .body { animation: jump .55s cubic-bezier(.3,.7,.4,1); }
+.dog.jump .body { animation: jumpPose .5s ease-out; }
+/* Sleeping on the cushion: legs tucked, head down, eyes shut, slow breathing */
+.dog.sleep .leg { opacity: 0; }
+.dog.sleep .body { transform: translateY(15px); animation: sleepBreath 3.6s ease-in-out infinite; }
+.dog.sleep .head { transform: rotate(16deg) translate(-2px, 6px); }
+.dog.sleep .eye { opacity: 0; animation: none; }
+.dog.sleep .eye-shut { opacity: 1; }
+.dog.sleep .tail { animation: none; transform: rotate(14deg); }
+.dog.sleep .dog-shadow { opacity: 0; }
+.zzz { position: absolute; bottom: 70px; right: 6px; display: flex; gap: 2px; font: 600 13px/1 var(--font); color: var(--muted-foreground); opacity: 0; pointer-events: none; transition: opacity .4s; }
+.zzz i { font-style: normal; animation: floatZ 2.4s ease-in-out infinite; }
+.zzz i:nth-child(2) { animation-delay: .4s; font-size: 15px; } .zzz i:nth-child(3) { animation-delay: .8s; font-size: 17px; }
+.dog.sleep .zzz { opacity: 1; }
 @keyframes stepA { 0%, 100% { transform: rotate(22deg); } 50% { transform: rotate(-22deg); } }
 @keyframes stepB { 0%, 100% { transform: rotate(-22deg); } 50% { transform: rotate(22deg); } }
 @keyframes runFront { 0%, 100% { transform: rotate(-38deg); } 50% { transform: rotate(30deg); } }
@@ -299,22 +302,22 @@ footer.site { padding-block: 32px 48px; font-size: 13px; color: var(--muted-fore
 @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-2px); } }
 @keyframes gallop { 0%, 100% { transform: translateY(0) rotate(0); } 25% { transform: translateY(-6px) rotate(-4deg); } 75% { transform: translateY(-3px) rotate(3deg); } }
 @keyframes breathe { 50% { transform: scaleY(1.015); } }
+@keyframes sleepBreath { 0%, 100% { transform: translateY(15px) scaleY(1); } 50% { transform: translateY(15px) scaleY(1.03); } }
 @keyframes earSwing { 0%, 100% { transform: rotate(-7deg); } 50% { transform: rotate(8deg); } }
 @keyframes wag { 0%, 100% { transform: rotate(-16deg); } 50% { transform: rotate(22deg); } }
 @keyframes blink { 0%, 93%, 100% { transform: scaleY(1); } 96% { transform: scaleY(.1); } }
 @keyframes happyHop { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
-@keyframes jump { 0%, 100% { transform: translateY(0); } 20% { transform: translateY(2px) scaleY(.95); } 55% { transform: translateY(-22px) rotate(-6deg); } }
+@keyframes jumpPose { 0% { transform: rotate(0); } 40% { transform: rotate(-14deg); } 100% { transform: rotate(0); } }
+@keyframes floatZ { 0% { transform: translateY(0); opacity: 0; } 30% { opacity: 1; } 100% { transform: translateY(-14px); opacity: 0; } }
 .woof { position: absolute; bottom: 100px; left: 82%; transform: translate(-50%, 6px); padding: 4px 10px; border-radius: 999px; background: var(--card); border: 1px solid var(--border); box-shadow: var(--shadow-lg); font: 600 12px/1.3 var(--font); color: var(--foreground); white-space: nowrap; opacity: 0; transition: opacity .2s, transform .2s; pointer-events: none; }
 .woof.show { opacity: 1; transform: translate(-50%, 0); }
-.dog-card { position: absolute; bottom: 110px; left: 0; width: 260px; overflow: hidden; pointer-events: auto; background: var(--card); border: 1px solid var(--border); border-radius: calc(var(--radius) + 6px); box-shadow: var(--shadow-lg); animation: pop .18s ease; transform-origin: 50% 100%; }
+.dog-card { position: absolute; bottom: 112px; left: 0; width: 270px; overflow: hidden; pointer-events: auto; background: var(--card); border: 1px solid var(--border); border-radius: calc(var(--radius) + 6px); box-shadow: var(--shadow-lg); animation: pop .18s ease; transform-origin: 50% 100%; }
 .dog-card[hidden] { display: none; }
-.dog-card > img { display: block; width: 100%; height: 210px; object-fit: cover; object-position: 50% 30%; }
-.dog-card-text { padding: 14px 16px 16px; }
-.dog-card-text b { display: block; font-size: 16px; margin-bottom: 4px; }
+.dog-card > img { display: block; width: 100%; height: 200px; object-fit: cover; object-position: 50% 20%; }
+.dog-card-text { padding: 12px 16px 14px; }
+.dog-card-text b { display: block; font-size: 15px; margin-bottom: 2px; }
 .dog-card-text p { margin: 0; font-size: 14px; color: var(--muted-foreground); line-height: 1.5; }
-.dog-card-close { position: absolute; top: 8px; right: 8px; background: rgba(255,255,255,.88); color: #0f172a; }
-.dog-card-close:hover { background: #fff; }
-/* Touch screens and reduced motion: Baileys sits at the end of the page instead of walking around */
+/* Touch screens and reduced motion: Baileys naps on his cushion at the end of the page */
 body { position: relative; }
 .dog-lane.still { position: absolute; }
 footer.site { padding-bottom: 112px; }
@@ -326,43 +329,38 @@ footer.site { padding-bottom: 112px; }
 .toast svg { width: 16px; height: 16px; color: #16a34a; }
 
 /* Responsive */
-@media (max-width: 1240px) {
+@media (max-width: 1280px) {
   .project { grid-template-columns: 1fr; padding: 12px 12px 20px; gap: 16px; }
   .text { padding: 0 8px; }
 }
-@media (max-width: 960px) {
-  .layout { grid-template-columns: 1fr; gap: 0; }
-  .profile { position: static; max-height: none; overflow: visible; padding-block: 28px 32px; border-bottom: 1px solid var(--border); }
-  .profile-inner { grid-template-columns: 96px minmax(0, 1fr); gap: 16px 20px; align-items: center; }
-  .profile-inner > :not(.avatar):not(.who) { grid-column: 1 / -1; }
-  .avatar { aspect-ratio: 1; border-radius: 50%; }
-  .profile h1 { font-size: 30px; }
-  .profile-more { display: inline-flex; }
-  .profile-extra { display: none; }
-  .profile.open .profile-extra { display: grid; }
-  .lang-label { display: none; }
-  .lang button { padding: 0 8px; }
-  .facts { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
-  main > section.block:first-child { padding-top: 40px; }
-  .search-btn { width: auto; }
-  .search-btn .txt { display: none; }
+@media (max-width: 1100px) {
+  .bg-grid { grid-template-columns: 1fr; gap: 40px; }
+  .search-btn .txt, .search-btn .kbd { display: none; }
 }
-@media (max-width: 760px) {
-  .nav { display: none; }
+@media (max-width: 860px) {
+  html { scroll-padding-top: 64px; }
+  .topbar { position: sticky; top: 0; right: auto; margin: 0; border-radius: 0; border-width: 0 0 1px; justify-content: space-between; padding: 8px 12px; box-shadow: none; }
+  .layout { grid-template-columns: 1fr; }
+  .profile { position: static; height: auto; overflow: visible; border-right: 0; border-bottom: 1px solid var(--border);
+    display: grid; grid-template-columns: 96px minmax(0, 1fr); align-items: center; gap: 16px 20px; padding: 24px 20px; }
+  .profile > .facts, .profile > .cta { grid-column: 1 / -1; }
+  .avatar { aspect-ratio: 1; max-height: none; border-radius: 50%; }
+  .avatar img { transform: scale(1.5); object-position: 50% 30%; }
+  .facts { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+  .cta { grid-template-columns: repeat(2, 1fr); margin-top: 0; }
+  main { padding: 32px 20px 0; }
+  .about-block .about { font-size: 17px; }
   section.block { padding-block: 44px; }
-  .head h2 { font-size: 24px; }
-  .timeline li { grid-template-columns: 1fr; gap: 2px; }
+  .head h2, .bg-grid h2, .about-block h2 { font-size: 24px; }
   .contact { grid-template-columns: 1fr; padding: 22px; gap: 28px; }
   .field-row { grid-template-columns: 1fr; }
   .lightbox { padding-inline: 12px; }
   .lb-prev, .lb-next { top: auto; bottom: max(10px, env(safe-area-inset-bottom, 0px)); transform: none; }
-  .search-btn .kbd { display: none; }
-  html { scroll-padding-top: 116px; }
-  .bar { flex-wrap: wrap; height: auto; padding-block: 10px; row-gap: 8px; }
-  .prefs { order: 3; width: 100%; justify-content: space-between; }
+  .lang-label { display: none; }
+  .lang button { padding: 0 8px; }
   .theme-btn { padding: 0 8px; }
 }
-@media (max-width: 400px) { .brand { font-size: 14px; margin-right: 0; } .profile-inner { grid-template-columns: 72px minmax(0, 1fr); } }
+@media (max-width: 420px) { .theme-btn #themeText { display: none; } .profile { grid-template-columns: 76px minmax(0, 1fr); } }
 </style>
 <script>
 /* Runs before the page draws, so the saved theme applies without a flash. Light by default. */
@@ -392,60 +390,53 @@ footer.site { padding-bottom: 112px; }
   <symbol id="i-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
 </svg>
 
-<header class="site" id="top">
-  <div class="bar">
-    <a class="brand" href="#top">Alper Kizik</a>
-    <nav class="nav" aria-label="Sections">
-      <a href="#projects" data-i18n="projects">Projects</a>
-      <a href="#experience" data-i18n="experience">Experience</a>
-      <a href="#contact" data-i18n="contact">Contact</a>
-    </nav>
-    <span class="spacer"></span>
-    <button type="button" class="btn btn-outline btn-sm search-btn" id="cmdOpen" aria-haspopup="dialog">
-      <span class="l"><svg><use href="#i-search"/></svg><span class="txt" data-i18n="search">Search…</span></span>
-      <span class="kbd" id="cmdKbd">Ctrl K</span>
-    </button>
-    <div class="prefs">
-      <div class="lang" role="group" aria-labelledby="langLabel">
-        <span class="lang-label" id="langLabel"><svg aria-hidden="true"><use href="#i-globe"/></svg><span class="sr-only" data-i18n="uiLang">Language</span></span>
-        <button type="button" lang="en" data-lang="en" aria-pressed="true">English</button>
-        <button type="button" lang="bg" data-lang="bg" aria-pressed="false">Български</button>
-        <button type="button" lang="tr" data-lang="tr" aria-pressed="false">Türkçe</button>
-      </div>
-      <button type="button" class="btn btn-ghost btn-sm theme-btn" id="themeBtn">
-        <svg class="moon"><use href="#i-moon"/></svg><svg class="sun"><use href="#i-sun"/></svg><span id="themeText">Dark mode</span>
-      </button>
-    </div>
+<div class="topbar" role="group" aria-label="Settings">
+  <button type="button" class="btn btn-ghost btn-sm search-btn" id="cmdOpen" aria-haspopup="dialog">
+    <svg><use href="#i-search"/></svg><span class="txt" data-i18n="search">Search…</span><span class="kbd" id="cmdKbd">Ctrl K</span>
+  </button>
+  <span class="sep" aria-hidden="true"></span>
+  <div class="lang" role="group" aria-labelledby="langLabel">
+    <span class="lang-label" id="langLabel"><svg aria-hidden="true"><use href="#i-globe"/></svg><span class="sr-only" data-i18n="uiLang">Language</span></span>
+    <button type="button" lang="en" data-lang="en" aria-pressed="true">English</button>
+    <button type="button" lang="bg" data-lang="bg" aria-pressed="false">Български</button>
+    <button type="button" lang="tr" data-lang="tr" aria-pressed="false">Türkçe</button>
   </div>
-</header>
+  <span class="sep" aria-hidden="true"></span>
+  <button type="button" class="btn btn-ghost btn-sm theme-btn" id="themeBtn">
+    <svg class="moon"><use href="#i-moon"/></svg><svg class="sun"><use href="#i-sun"/></svg><span id="themeText">Dark mode</span>
+  </button>
+</div>
 
 <div class="layout">
-  <aside class="profile" aria-label="About me">
-    <div class="profile-inner">
-      <div class="avatar reveal"><img src="profile.jpg" alt="Alper Kizik" width="1817" height="2242"></div>
-      <div class="who reveal">
-        <h1>Alper Kizik</h1>
-        <p class="tagline" data-i18n="tagline">Data quality specialist</p>
-      </div>
-      <p class="about reveal d2" data-i18n="aboutText">I work in data quality and spend my spare time building tools with AI. I enjoy research, making complex ideas easy to understand and finding ways to make work more efficient.</p>
-      <div class="cta reveal d2">
-        <a class="btn btn-default" href="Alper_Kizik_CV.pdf" target="_blank" rel="noopener"><svg><use href="#i-file"/></svg><span data-i18n="viewCv">View CV</span></a>
-        <a class="btn btn-outline" href="https://www.linkedin.com/in/alperkizik" target="_blank" rel="noopener">LinkedIn</a>
-        <a class="btn btn-outline" href="https://github.com/akizik1" target="_blank" rel="noopener">GitHub</a>
-      </div>
-      <button type="button" class="profile-more" id="profileMore" aria-expanded="false" aria-controls="profileExtra"><span data-i18n="moreAbout">More about me</span><svg aria-hidden="true"><use href="#i-down"/></svg></button>
-      <div class="profile-extra" id="profileExtra">
-      <dl class="facts reveal d3">
-        <div><dt data-i18n="kNow">Now</dt><dd><span data-i18n="jobDqa">Data Quality Assurance Specialist</span><small>Oliant</small></dd></div>
-        <div><dt data-i18n="kBased">Based in</dt><dd><span data-i18n="bulgaria">Bulgaria</span><small data-i18n="remote4">Working remotely for almost 4 years</small></dd></div>
-        <div><dt data-i18n="kLang">Languages</dt><dd data-i18n="langs">Turkish, English</dd></div>
-      </dl>
-      <p class="also reveal d3" data-i18n="aboutAlso">Other interests: emerging technologies, psychology and health, sustainability and e-commerce.</p>
-      </div>
+  <aside class="profile" id="top" aria-label="About me">
+    <div class="avatar reveal"><img src="profile.jpg" alt="Alper Kizik" width="1817" height="2242"></div>
+    <div class="who reveal">
+      <h1>Alper Kizik</h1>
+      <p class="tagline" data-i18n="tagline">Data quality specialist</p>
+    </div>
+    <dl class="facts reveal d2">
+      <div><dt data-i18n="kNow">Now</dt><dd><span data-i18n="jobDqa">Data Quality Assurance Specialist</span><small>Oliant</small></dd></div>
+      <div><dt data-i18n="kEdu">Education</dt><dd data-i18n="mbaShort">MBA in Management Information Systems</dd></div>
+      <div><dt data-i18n="kBased">Based in</dt><dd><span data-i18n="bulgaria">Bulgaria</span><small data-i18n="remote4">Working remotely for almost 4 years</small></dd></div>
+      <div><dt data-i18n="kLang">Languages</dt><dd data-i18n="langs">Turkish, English</dd></div>
+    </dl>
+    <div class="cta reveal d3">
+      <a class="btn btn-default" href="Alper_Kizik_CV.pdf" target="_blank" rel="noopener"><svg><use href="#i-file"/></svg><span data-i18n="viewCv">View CV</span></a>
+      <a class="btn btn-outline" href="https://www.linkedin.com/in/alperkizik" target="_blank" rel="noopener"><svg><use href="#i-linkedin"/></svg>LinkedIn</a>
+      <a class="btn btn-outline" href="https://github.com/akizik1" target="_blank" rel="noopener"><svg><use href="#i-code"/></svg>GitHub</a>
+      <a class="btn btn-outline" href="#contact"><svg><use href="#i-send"/></svg><span data-i18n="contact">Contact</span></a>
     </div>
   </aside>
 
 <main>
+  <section class="block about-block" id="about" aria-labelledby="aboutTitle">
+    <div class="container">
+      <h2 id="aboutTitle" data-i18n="about">About</h2>
+      <p class="about" data-i18n="aboutText">I work in data quality and spend my spare time building tools with AI. I enjoy research, making complex ideas easy to understand and finding ways to make work more efficient.</p>
+      <p class="also" data-i18n="aboutAlso">Other interests: emerging technologies, psychology and health, sustainability and e-commerce.</p>
+    </div>
+  </section>
+
   <section class="block" id="projects" aria-labelledby="projectsTitle">
     <div class="container">
       <div class="head">
@@ -458,16 +449,10 @@ footer.site { padding-bottom: 112px; }
     </div>
   </section>
 
-  <section class="block" id="experience" aria-labelledby="expTitle">
-    <div class="container">
-      <div class="head">
-        <h2 id="expTitle" data-i18n="background">Background</h2>
-        <div class="tabs" role="tablist" aria-label="Background">
-          <button type="button" role="tab" id="tab-work" aria-controls="panel-work" aria-selected="true" data-i18n="experience">Experience</button>
-          <button type="button" role="tab" id="tab-edu" aria-controls="panel-edu" aria-selected="false" tabindex="-1" data-i18n="education">Education</button>
-        </div>
-      </div>
-      <div role="tabpanel" id="panel-work" aria-labelledby="tab-work">
+  <section class="block" id="experience">
+    <div class="container bg-grid">
+      <div>
+        <h2 data-i18n="experience">Experience</h2>
         <ul class="timeline">
           <li><span class="when" data-i18n="w1">May 2023 – Present</span><span><b data-i18n="jobDqa">Data Quality Assurance Specialist</b><span class="org" data-i18n="o1">Oliant · Remote</span></span></li>
           <li><span class="when" data-i18n="w2">Jan 2025 – Jan 2026</span><span><b data-i18n="j2">Research Team Lead (volunteer)</b><span class="org" data-i18n="o2">Wiley-IEEE book: <a class="book" href="https://www.wiley.com/en-jp/shop/general-energy/intelligent-power-systems-a-comprehensive-guide-to-ai-iot-big-data-and-digital-twins-p-9781394474813" target="_blank" rel="noopener"><i>Intelligent Power Systems</i></a> · Remote</span></span></li>
@@ -477,7 +462,8 @@ footer.site { padding-bottom: 112px; }
           <li><span class="when" data-i18n="w6">Nov 2022 – May 2023</span><span><b data-i18n="j6">Operations Assistant, International Trade</b><span class="org" data-i18n="o6">VEO · Sofia</span></span></li>
         </ul>
       </div>
-      <div role="tabpanel" id="panel-edu" aria-labelledby="tab-edu" hidden>
+      <div id="education">
+        <h2 data-i18n="education">Education</h2>
         <ul class="timeline">
           <li><span class="when" data-i18n="e1w">Sep 2022 – May 2025</span><span><b data-i18n="e1">MBA, Management Information Systems</b><span class="org" data-i18n="e1o">Sofia University St. Kliment Ohridski</span></span></li>
           <li><span class="when" data-i18n="e2w">Sep 2016 – Jun 2021</span><span><b data-i18n="e2">B.Sc. Civil Engineering</b><span class="org" data-i18n="e2o">Istanbul Technical University</span></span></li>
@@ -540,67 +526,63 @@ footer.site { padding-bottom: 112px; }
   </div>
 </div>
 
-<!-- Baileys: our dog lives along the bottom edge of the screen -->
+<!-- Baileys: our dog walks along the bottom edge of the screen and naps on his cushion -->
 <div class="dog-lane" id="dogLane">
+  <svg class="cushion" id="cushion" viewBox="0 0 160 44" aria-hidden="true">
+    <ellipse cx="80" cy="41" rx="74" ry="3" fill="rgba(15,23,42,.12)"/>
+    <path d="M8 26C6 14 14 8 30 8h100c16 0 24 6 22 18 2 9-4 14-18 14H26C12 40 6 35 8 26z" fill="#d9ccb6"/>
+    <path d="M14 22c2-8 8-11 20-11h92c12 0 18 3 20 11" stroke="#efe6d6" stroke-width="3" fill="none" stroke-linecap="round" opacity=".8"/>
+    <path d="M20 34h120" stroke="#c4b49a" stroke-width="1.2" stroke-dasharray="2 3"/>
+    <circle cx="80" cy="24" r="2" fill="#c4b49a"/>
+  </svg>
   <div class="dog stand" id="dog">
     <span class="woof" id="woof" aria-hidden="true"></span>
+    <span class="zzz" aria-hidden="true"><i>z</i><i>z</i><i>z</i></span>
     <button type="button" class="dog-btn" id="dogBtn" aria-haspopup="dialog" aria-controls="dogCard">
       <span class="dog-flip">
         <svg class="dog-svg" viewBox="12 4 152 122" aria-hidden="true">
           <ellipse class="dog-shadow" cx="86" cy="121.5" rx="48" ry="3.4"/>
           <g class="body">
-            <!-- far legs -->
-            <g class="leg leg-ff"><path d="M104 68h9v48q0 4-3 5h-6q-3-1-3-4z" fill="#e0d8cd"/><ellipse cx="110" cy="121" rx="6" ry="2.9" fill="#e0d8cd"/></g>
-            <g class="leg leg-fh"><path d="M52 70c14-2 18 8 16 18l-8 14v15q0 4-3 4h-5v-17c0-8-2-18 0-34z" fill="#e0d8cd"/><ellipse cx="56" cy="121" rx="6" ry="2.9" fill="#e0d8cd"/></g>
-            <!-- tail, level and feathered -->
+            <g class="leg leg-ff"><path d="M104 68h9v48q0 4-3 5h-6q-3-1-3-4z" fill="#e0d8cd"/><g fill="#5a2c20" opacity=".7"><circle cx="107" cy="104" r="1"/><circle cx="109" cy="112" r=".9"/></g><ellipse cx="110" cy="121" rx="6" ry="2.9" fill="#e0d8cd"/></g>
+            <g class="leg leg-fh"><path d="M52 70c14-2 18 8 16 18l-8 14v15q0 4-3 4h-5v-17c0-8-2-18 0-34z" fill="#43211a" opacity=".88"/><path d="M53 100h7v17q0 4-3 4h-5z" fill="#e0d8cd"/><ellipse cx="56" cy="121" rx="6" ry="2.9" fill="#e0d8cd"/></g>
             <g class="tail">
               <path d="M46 56c-9-4-19-8-30-14 2 5 5 7 8 7-2 4 2 5 4 4-1 4 3 5 6 3 0 4 5 4 7 1 2 3 5 2 6 0z" fill="#fbf8f4"/>
-              <path d="M47 54c-5-2-10-2-15-2 1 4 7 6 15 6z" fill="#5b2f22"/>
-              <path d="M31 55c2 1 4 1 6 0" stroke="#b8622e" stroke-width="1.2" fill="none" stroke-linecap="round" opacity=".7"/>
+              <path d="M47 54c-6-2-13-3-20-5 2 4 8 7 20 9z" fill="#43211a"/>
             </g>
-            <!-- body: white base, liver saddle and hip patch, feathered belly -->
             <path d="M42 58c2-8 14-9 28-8l42-3c10-1 16 5 19 15 3 10-3 22-15 26-12 3-26-2-40-3-12 1-22-1-28-7-6-6-8-14-6-20z" fill="#fbf8f4"/>
             <path d="M70 86c3 4 6 4 8 1 2 4 6 4 8 1 2 4 6 3 8 0 2 3 6 3 8 0l1-3-33 1z" fill="#fbf8f4"/>
-            <path d="M58 52c10-3 26-4 40-3 2 7-2 15-12 17s-22 0-28-6z" fill="#5b2f22"/>
-            <path d="M42 58c2-6 8-8 14-7 2 7 0 15-6 19-4 0-8-4-8-12z" fill="#5b2f22"/>
-            <g fill="#6e3a2a"><circle cx="74" cy="72" r="1"/><circle cx="82" cy="76" r=".9"/><circle cx="90" cy="73" r="1"/><circle cx="98" cy="78" r=".9"/><circle cx="66" cy="77" r=".8"/><circle cx="105" cy="70" r=".9"/></g>
-            <!-- near hind leg: angled stifle and hock, feathering -->
+            <path d="M46 54c8-6 30-7 60-6 2 9-3 17-14 19-14 3-30 1-40-4z" fill="#43211a"/>
+            <path d="M42 58c2-6 8-9 16-8 4 8 2 18-6 22-6 0-11-6-10-14z" fill="#43211a"/>
+            <g fill="#5a2c20"><circle cx="74" cy="74" r="1"/><circle cx="82" cy="78" r=".9"/><circle cx="90" cy="75" r="1"/><circle cx="98" cy="79" r=".9"/><circle cx="105" cy="72" r=".9"/></g>
             <g class="leg leg-nh">
-              <path d="M42 70c14-3 20 8 18 19l-8 14v15q0 3-3 3h-5v-17c0-8-4-20-2-34z" fill="#fbf8f4"/>
-              <path d="M42 76c-3 6-3 14 0 20-2 3-2 6 0 8z" fill="#fbf8f4"/>
-              <path d="M44 70c6-2 11 0 13 4-4 4-9 5-13 3z" fill="#5b2f22"/>
-              <g fill="#6e3a2a"><circle cx="50" cy="90" r=".9"/><circle cx="47" cy="100" r="1"/><circle cx="50" cy="110" r=".8"/><circle cx="46" cy="114" r=".8"/></g>
+              <path d="M42 70c14-3 20 8 18 19l-8 14v15q0 3-3 3h-5v-17c0-8-4-20-2-34z" fill="#43211a"/>
+              <path d="M44 100h8v18q0 3-3 3h-5z" fill="#fbf8f4"/>
+              <g fill="#5a2c20"><circle cx="47" cy="106" r="1"/><circle cx="50" cy="111" r=".9"/><circle cx="46" cy="115" r=".8"/></g>
               <ellipse cx="48.5" cy="121" rx="6.5" ry="3" fill="#fbf8f4"/>
             </g>
-            <!-- near front leg with feathering at the back -->
             <g class="leg leg-nf">
               <path d="M112 64h10v52q0 4-3 5h-7z" fill="#fbf8f4"/>
               <path d="M112 72c-3 5-3 11 0 15-2 3-2 7 0 9z" fill="#fbf8f4"/>
-              <path d="M112 74c-2 4-2 8 0 11" stroke="#b8622e" stroke-width="1.3" fill="none" stroke-linecap="round" opacity=".55"/>
-              <g fill="#6e3a2a"><circle cx="116" cy="92" r=".9"/><circle cx="119" cy="100" r="1"/><circle cx="115.5" cy="108" r=".8"/><circle cx="119" cy="114" r=".8"/></g>
+              <g fill="#5a2c20"><circle cx="116" cy="94" r="1.1"/><circle cx="119" cy="100" r="1"/><circle cx="115.5" cy="106" r="1.1"/><circle cx="119" cy="111" r="1"/><circle cx="116" cy="116" r=".9"/></g>
               <ellipse cx="118.5" cy="121" rx="6.5" ry="3" fill="#fbf8f4"/>
             </g>
-            <!-- chest feathering -->
-            <path d="M126 76c2 4 1 8-2 11 1 2 0 4-2 5 0-5-1-11 4-16z" fill="#fbf8f4"/>
-            <!-- neck: white front, liver back -->
+            <path d="M124 70c4 4 4 10 1 14 2 2 1 6-2 7 0-3-1-6-2-8 0-5 0-10 3-13z" fill="#fbf8f4"/>
             <path d="M100 52c6-16 18-30 30-36l16 12c-4 14-10 28-18 40-12-2-24-8-28-16z" fill="#fbf8f4"/>
-            <path d="M100 52c6-16 18-30 30-36l4 4c-10 8-18 20-22 34-4 2-10 1-12-2z" fill="#5b2f22"/>
-            <g fill="#6e3a2a"><circle cx="130" cy="46" r=".8"/><circle cx="128" cy="56" r=".9"/><circle cx="135" cy="38" r=".7"/></g>
-            <!-- head -->
+            <path d="M100 52c6-16 18-30 30-36l4 4c-10 8-18 20-22 34-4 2-10 1-12-2z" fill="#43211a"/>
             <g class="head"><g transform="translate(-26 -3) scale(1.19)">
-              <ellipse cx="136" cy="22" rx="11" ry="9.5" fill="#5b2f22"/>
-              <path d="M140 18c6-1 14 0 18 3 2 3 1 8-2 9-6 2-12 1-16-2z" fill="#5b2f22"/>
-              <path d="M136 12c3 3 6 6 9 7l9 1c-5 2-11 2-16 1-2-3-3-6-2-9z" fill="#fbf8f4"/>
-              <path d="M142 26c6 3 11 4 15 3-1 3-5 5-11 5-3-1-5-3-6-5z" fill="#fbf8f4"/>
-              <g fill="#6e3a2a"><circle cx="148" cy="30" r=".7"/><circle cx="151" cy="31.5" r=".6"/><circle cx="145" cy="31" r=".6"/></g>
-              <ellipse cx="142.5" cy="27" rx="3.6" ry="2.4" fill="#b8622e" opacity=".9"/>
-              <ellipse cx="157.5" cy="23.5" rx="2.8" ry="2.3" fill="#2b1712"/>
-              <path d="M155 30c-3 1-6 1-9 0" stroke="#2b1712" stroke-width=".8" fill="none" stroke-linecap="round"/>
-              <ellipse cx="138.6" cy="14.6" rx="2.5" ry="1.3" fill="#b8622e"/>
+              <ellipse cx="136" cy="22" rx="11" ry="9.5" fill="#43211a"/>
+              <path d="M140 18c6-1 14 0 18 3 2 3 1 8-2 9-6 2-12 1-16-2z" fill="#c2692c"/>
+              <path d="M141 27c5 3 10 4 15 3-1 3-5 5-11 5-3-1-5-3-6-5z" fill="#d98d52"/>
+              <path d="M135 11c3 3 6 6 9 8 3 1 7 1 10 2-2 1-5 1-8 1-4 0-7-2-9-4-2-2-2-5-2-7z" fill="#fbf8f4"/>
+              <g fill="#fbf8f4" opacity=".85"><circle cx="148" cy="27" r=".8"/><circle cx="151" cy="28.5" r=".7"/><circle cx="145" cy="28.5" r=".7"/><circle cx="153" cy="26" r=".6"/></g>
+              <ellipse cx="157.5" cy="23.2" rx="2.9" ry="2.4" fill="#5e3b35"/>
+              <path d="M155 30c-3 1-6 1-9 0" stroke="#43211a" stroke-width=".8" fill="none" stroke-linecap="round"/>
+              <ellipse cx="138.4" cy="14.4" rx="2.6" ry="1.4" fill="#c2692c"/>
               <g class="eye"><ellipse cx="139.6" cy="18.4" rx="2" ry="2.2" fill="#1c1210"/><circle cx="140.3" cy="17.7" r=".6" fill="#fff"/></g>
+              <path class="eye-shut" d="M137.6 18.8c1.3 1 2.7 1 4 0" stroke="#1c1210" stroke-width=".9" fill="none" stroke-linecap="round"/>
               <g class="ear">
-                <path d="M131 14c-5 3-7 13-7 23 0 8 2 12 5 14 2-1 3 1 5 0 2 1 4-1 5-3 1-4 2-8 2-14 0-8-2-16-5-20z" fill="#4a2519"/>
-                <path d="M127 30c2 2 4 2 6 0M126 38c2 2 4 2 6 0M127 45c2 2 4 2 6 0" stroke="#6b3a2b" stroke-width="1" fill="none" stroke-linecap="round"/>
+                <path d="M131 13c-5 3-8 12-8 21-2 2-2 5 0 7-2 2-1 6 2 7 0 3 3 4 5 2 2 2 5 1 6-2 3-1 3-5 1-7 2-3 1-6-1-8 1-8-1-16-5-20z" fill="#3a1b13"/>
+                <path d="M126 26c2 1 3 3 2 5M131 24c2 2 2 4 1 6M125 35c2 1 3 3 2 5M131 34c2 2 2 4 0 6M127 43c2 1 3 3 1 5" stroke="#6f3a26" stroke-width="1" fill="none" stroke-linecap="round" opacity=".75"/>
               </g>
             </g></g>
           </g>
@@ -609,12 +591,11 @@ footer.site { padding-bottom: 112px; }
     </button>
   </div>
   <div class="dog-card" id="dogCard" role="dialog" aria-labelledby="dogHi" hidden>
-    <img src="baileys.webp" alt="Baileys in his tuxedo" width="480" height="480">
+    <img src="baileys.webp" alt="Baileys sitting by the window" width="520" height="405">
     <div class="dog-card-text">
-      <b id="dogHi" data-i18n="dogHi">Woof! I'm Baileys.</b>
-      <p data-i18n="dogBio">The office dog. Sometimes he annoys us, but we love him.</p>
+      <b id="dogHi" data-i18n="dogHi">This is Baileys, our good boy.</b>
+      <p data-i18n="dogBio">Sometimes he annoys us, but we love him.</p>
     </div>
-    <button type="button" class="dog-card-close btn btn-ghost btn-sm btn-icon" id="dogClose"><svg><use href="#i-x"/></svg></button>
   </div>
 </div>
 
@@ -630,7 +611,7 @@ var I18N = {
     cmdPlaceholder: 'Search projects, sections and links…', cmdNone: 'Nothing found.',
     gPages: 'Sections', gProjects: 'Projects', gLinks: 'Links', gSettings: 'Settings',
     goTop: 'About me', langTo: 'Switch language: ',
-    dogLabel: 'Baileys, our dog. Click to say hi', woof: 'Woof!', 
+    dogLabel: 'Baileys, our dog', woof: 'Woof!', 
     fSending: 'Sending…', fSent: 'Thanks! Your message was sent.', fError: 'The message could not be sent. Please try again or email me directly.',
     fMissing: 'Please fill in your name, email and message.', fBadEmail: 'Please check your email address.', fMailApp: 'Your mail app opened with the message filled in. Press send there.'
   },
@@ -640,8 +621,8 @@ var I18N = {
     cmdPlaceholder: 'Proje, bölüm ya da bağlantı ara…', cmdNone: 'Sonuç bulunamadı.',
     gPages: 'Bölümler', gProjects: 'Projeler', gLinks: 'Bağlantılar', gSettings: 'Ayarlar',
     goTop: 'Hakkımda', langTo: 'Dili değiştir: ', moreAbout: 'Hakkımda daha fazla',
-    dogLabel: 'Köpeğimiz Baileys. Selam vermek için tıkla', woof: 'Hav!', 
-    dogHi: 'Hav! Ben Baileys.', dogBio: 'Ofisin köpeği. Bazen bizi deli ediyor ama onu çok seviyoruz.', footDog: 'Baileys bizim köpeğimiz. Bazen bizi deli ediyor ama onu çok seviyoruz.',
+    dogLabel: 'Köpeğimiz Baileys', kEdu: 'Eğitim', mbaShort: 'Yönetim Bilişim Sistemleri MBA', about: 'Hakkımda', woof: 'Hav!', 
+    dogHi: 'Bu Baileys, bizim tatlı oğlumuz.', dogBio: 'Bazen bizi deli ediyor ama onu çok seviyoruz.', footDog: 'Baileys bizim köpeğimiz. Bazen bizi deli ediyor ama onu çok seviyoruz.',
     search: 'Ara…', contact: 'İletişim', background: 'Özgeçmiş', projectsSub: 'Boş zamanlarımda, çoğunlukla yapay zekâ ile geliştirdiğim araçlar.',
     contactTitle: 'İletişime geç', contactText: 'Mesajını buraya yaz, doğrudan e-posta kutuma gelsin. Genelde birkaç gün içinde dönüş yaparım.', contactOr: 'Ya da doğrudan e-posta gönder:', contactLi: 'Ya da LinkedIn’den bağlantı kur:', liBtn: 'LinkedIn’de bağlantı kur',
     fName: 'Adın', fEmail: 'E-posta adresin', fMessage: 'Mesajın', fSend: 'Mesajı gönder', fSending: 'Gönderiliyor…', fSent: 'Teşekkürler! Mesajın gönderildi.', fError: 'Mesaj gönderilemedi. Tekrar dene ya da doğrudan e-posta at.',
@@ -676,8 +657,8 @@ var I18N = {
     cmdPlaceholder: 'Търси проекти, раздели и връзки…', cmdNone: 'Няма резултати.',
     gPages: 'Раздели', gProjects: 'Проекти', gLinks: 'Връзки', gSettings: 'Настройки',
     goTop: 'За мен', langTo: 'Смени езика: ', moreAbout: 'Повече за мен',
-    dogLabel: 'Baileys, нашето куче. Кликни, за да го поздравиш', woof: 'Бау!', 
-    dogHi: 'Бау! Аз съм Baileys.', dogBio: 'Кучето на офиса. Понякога ни дразни, но много го обичаме.', footDog: 'Baileys е нашето куче. Понякога ни дразни, но много го обичаме.',
+    dogLabel: 'Baileys, нашето куче', kEdu: 'Образование', mbaShort: 'MBA по управленски информационни системи', about: 'За мен', woof: 'Бау!', 
+    dogHi: 'Това е Baileys, нашето добро момче.', dogBio: 'Понякога ни дразни, но много го обичаме.', footDog: 'Baileys е нашето куче. Понякога ни дразни, но много го обичаме.',
     search: 'Търсене…', contact: 'Контакт', background: 'Професионален път', projectsSub: 'Инструменти, които създавам в свободното си време, най-вече с изкуствен интелект.',
     contactTitle: 'Свържи се с мен', contactText: 'Напиши съобщението си тук и то ще стигне директно до пощата ми. Обикновено отговарям до няколко дни.', contactOr: 'Или ми пиши директно:', contactLi: 'Или се свържи с мен в LinkedIn:', liBtn: 'Свържи се в LinkedIn',
     fName: 'Име', fEmail: 'Твоят имейл', fMessage: 'Съобщение', fSend: 'Изпрати съобщението', fSending: 'Изпращане…', fSent: 'Благодаря! Съобщението е изпратено.', fError: 'Съобщението не можа да се изпрати. Опитай отново или ми пиши директно.',
@@ -759,35 +740,6 @@ var setLang, toggleTheme;
     });
   });
 
-  /* Header border + active section link */
-  var header = document.querySelector('header.site');
-  function onScroll() { header.classList.toggle('scrolled', scrollY > 8); }
-  addEventListener('scroll', onScroll, { passive: true }); onScroll();
-  if ('IntersectionObserver' in window) {
-    var links = document.querySelectorAll('.nav a');
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) {
-        if (!en.isIntersecting) return;
-        links.forEach(function (a) { a.setAttribute('aria-current', a.getAttribute('href') === '#' + en.target.id ? 'true' : 'false'); });
-      });
-    }, { rootMargin: '-40% 0px -55% 0px' });
-    document.querySelectorAll('section[id]').forEach(function (s) { io.observe(s); });
-  }
-
-  /* Experience / Education tabs */
-  var tabs = [].slice.call(document.querySelectorAll('#experience [role="tab"]'));
-  function selectTab(tab) {
-    tabs.forEach(function (x) {
-      var on = x === tab; x.setAttribute('aria-selected', String(on)); x.tabIndex = on ? 0 : -1;
-      document.getElementById(x.getAttribute('aria-controls')).hidden = !on;
-    });
-  }
-  tabs.forEach(function (tab, k) {
-    tab.addEventListener('click', function () { selectTab(tab); });
-    tab.addEventListener('keydown', function (e) {
-      if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { var n = tabs[(k + (e.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length]; selectTab(n); n.focus(); }
-    });
-  });
 })();
 
 /* Copy email */
@@ -797,10 +749,6 @@ function copyEmail() {
   try { navigator.clipboard.writeText(el.textContent).then(function () { toast(t('copied')); }, fallback); } catch (e) { fallback(); }
 }
 document.getElementById('copyBtn').addEventListener('click', copyEmail);
-document.getElementById('profileMore').addEventListener('click', function () {
-  var open = document.querySelector('.profile').classList.toggle('open');
-  this.setAttribute('aria-expanded', String(open));
-});
 
 /* Contact form: sends the message to my inbox through Web3Forms.
    Without an access key it opens the visitor's mail app with the message already filled in. */
@@ -1051,8 +999,8 @@ var showProject;
     items = [
       { g: 'gPages', ic: 'user', label: t('goTop'), run: function () { scrollTo({ top: 0 }); } },
       { g: 'gPages', ic: 'hash', label: t('projects'), run: go('#projects') },
-      { g: 'gPages', ic: 'hash', label: t('experience'), run: function () { document.getElementById('tab-work').click(); go('#experience')(); } },
-      { g: 'gPages', ic: 'hash', label: t('education'), run: function () { document.getElementById('tab-edu').click(); go('#experience')(); } },
+      { g: 'gPages', ic: 'hash', label: t('experience'), run: go('#experience') },
+      { g: 'gPages', ic: 'hash', label: t('education'), run: go('#education') },
       { g: 'gPages', ic: 'hash', label: t('contact'), run: go('#contact') }
     ];
     PROJECTS.forEach(function (p) {
@@ -1124,15 +1072,16 @@ var showProject;
 })();
 </script>
 <script>
-/* Baileys. He walks along the bottom of the screen, runs to the mouse when it comes near,
-   stands, sniffs and tilts his head. On touch screens and with "reduce motion" he stands at the end of the page. */
+/* Baileys. He walks along the bottom of the screen, runs to the mouse when it comes near, sniffs, tilts his head,
+   and now and then jumps on his cushion (bottom right) for a nap. Hover over him to see who he is.
+   On touch screens and with "reduce motion" he naps on his cushion at the end of the page. */
 (function () {
   var lane = document.getElementById('dogLane'), dog = document.getElementById('dog'), btn = document.getElementById('dogBtn');
-  var flip = dog.querySelector('.dog-flip'), woof = document.getElementById('woof');
-  var card = document.getElementById('dogCard');
-  var W = 120, x = 0, dir = 1, mode = 'stand', extra = '';
-  var mx = -1, my = -1, mouseNear = false, target = null, restUntil = 0, busyUntil = 0;
-  var last = 0, raf = 0, happyDone = false;
+  var flip = dog.querySelector('.dog-flip'), woof = document.getElementById('woof'), card = document.getElementById('dogCard');
+  var cushion = document.getElementById('cushion');
+  var W = 120, LIFT = 26, x = 0, y = 0, dir = 1, mode = 'stand', extra = '';
+  var mx = -1, my = -1, mouseNear = false, target = null, restUntil = 0, busyUntil = 0, napAt = 0, wakeAt = 0;
+  var goingToBed = false, jump = null, last = 0, raf = 0, happyDone = false, hoverT = 0;
   var still = window.matchMedia && (matchMedia('(prefers-reduced-motion: reduce)').matches || matchMedia('(hover: none)').matches);
 
   btn.setAttribute('aria-label', t('dogLabel'));
@@ -1140,41 +1089,61 @@ var showProject;
 
   function now() { return performance.now(); }
   function rand(a, b) { return a + Math.random() * (b - a); }
-  function maxX() { return Math.max(0, document.documentElement.clientWidth - W - 12); }
-  function place() { dog.style.transform = 'translateX(' + x.toFixed(1) + 'px)'; }
+  function vw() { return document.documentElement.clientWidth; }
+  function maxX() { return Math.max(0, vw() - W - 12); }
+  function bedX() { var r = cushion.getBoundingClientRect(); return r.left + r.width / 2 - W / 2 + 6; }
+  function place() { dog.style.transform = 'translate(' + x.toFixed(1) + 'px,' + (-y).toFixed(1) + 'px)'; }
   function face(d) { if (d && d !== dir) { dir = d; flip.style.transform = 'scaleX(' + dir + ')'; } }
-  function setMode(m) { if (m !== mode) { if (mode) dog.classList.remove(mode); mode = m; dog.classList.add(m); } }
+  function setMode(m) { if (m !== mode) { dog.classList.remove(mode); mode = m; dog.classList.add(m); } }
   function setExtra(c) { if (c !== extra) { if (extra) dog.classList.remove(extra); extra = c; if (c) dog.classList.add(c); } }
   function say(txt, ms) { woof.textContent = txt; woof.classList.add('show'); clearTimeout(say.t); say.t = setTimeout(function () { woof.classList.remove('show'); }, ms || 1400); }
 
-  /* Click: jump, woof and show his photo card */
+  /* Card: shows on hover (and on tap/click) */
   function openCard() {
+    clearTimeout(hoverT);
+    if (!card.hidden) return;
     card.hidden = false;
-    var cw = 260, left = Math.min(Math.max(8, x + W / 2 - cw / 2), document.documentElement.clientWidth - cw - 8);
+    var cw = 270, left = Math.min(Math.max(8, x + W / 2 - cw / 2), vw() - cw - 8);
     card.style.left = left + 'px';
-    document.getElementById('dogClose').focus({ preventScroll: true });
+    card.style.bottom = (112 + y) + 'px';
   }
   function closeCard() { card.hidden = true; }
+  function closeSoon() { clearTimeout(hoverT); hoverT = setTimeout(closeCard, 250); }
+  btn.addEventListener('mouseenter', openCard); btn.addEventListener('mouseleave', closeSoon);
+  card.addEventListener('mouseenter', function () { clearTimeout(hoverT); }); card.addEventListener('mouseleave', closeSoon);
+  btn.addEventListener('focus', openCard); btn.addEventListener('blur', closeSoon);
   btn.addEventListener('click', function () {
-    dog.classList.remove('jump'); void dog.offsetWidth; dog.classList.add('jump');
-    setTimeout(function () { dog.classList.remove('jump'); }, 600);
+    if (mode === 'sleep') return say('z z z', 1200);
+    dog.classList.remove('happy'); void dog.offsetWidth; dog.classList.add('happy');
+    setTimeout(function () { dog.classList.remove('happy'); }, 1700);
     say(t('woof'));
-    if (card.hidden) openCard(); else closeCard();
+    if (card.hidden) openCard();
   });
-  document.getElementById('dogClose').addEventListener('click', function () { closeCard(); btn.focus({ preventScroll: true }); });
-  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !card.hidden) { closeCard(); btn.focus({ preventScroll: true }); } });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeCard(); });
   document.addEventListener('pointerdown', function (e) { if (!card.hidden && !card.contains(e.target) && !btn.contains(e.target)) closeCard(); });
 
   if (still) {
-    /* Sitting quietly near the bottom of the page */
     lane.classList.add('still');
-    x = Math.max(0, document.documentElement.clientWidth - W - 28); place(); setMode('stand');
-    addEventListener('resize', function () { x = Math.max(0, document.documentElement.clientWidth - W - 28); place(); });
+    function napHere() { x = bedX(); y = LIFT - 8; face(1); place(); }
+    setMode('sleep'); napHere(); addEventListener('resize', napHere);
     return;
   }
 
-  x = rand(60, Math.max(80, maxX() - 60)); place(); setMode('stand');
+  /* Jumps are an arc from (x0, y0) to (x1, y1) */
+  function startJump(x1, y1, then) {
+    jump = { x0: x, y0: y, x1: x1, y1: y1, t0: now(), d: 480, then: then };
+    face(x1 > x ? 1 : x1 < x ? -1 : dir);
+    setMode('stand'); setExtra(''); dog.classList.add('jump');
+  }
+  function fallAsleep() { setMode('sleep'); setExtra(''); wakeAt = now() + rand(14000, 26000); }
+  function wakeUp(thenRun) {
+    setMode('stand'); setExtra('');
+    startJump(x - 60 * dir, 0, function () { restUntil = now() + (thenRun ? 0 : rand(1500, 3000)); napAt = now() + rand(40000, 70000); });
+  }
+
+  x = rand(60, Math.max(80, maxX() - 200)); place(); setMode('stand');
   restUntil = now() + rand(1500, 3000);
+  napAt = now() + rand(20000, 35000);
 
   addEventListener('pointermove', function (e) {
     if (e.pointerType !== 'mouse') return;
@@ -1187,11 +1156,28 @@ var showProject;
     raf = requestAnimationFrame(step);
     var dt = Math.min(0.05, (ts - (last || ts)) / 1000); last = ts;
     var n = now();
+
+    if (jump) {
+      var k = Math.min(1, (n - jump.t0) / jump.d);
+      x = jump.x0 + (jump.x1 - jump.x0) * k;
+      y = jump.y0 + (jump.y1 - jump.y0) * k + Math.sin(Math.PI * k) * 34;
+      place();
+      if (k === 1) { var cb = jump.then; jump = null; dog.classList.remove('jump'); if (cb) cb(); }
+      return;
+    }
+    if (!card.hidden) { if (mode !== 'sleep') { setMode('stand'); setExtra(''); } return; }
+
+    if (mode === 'sleep') {
+      /* Wakes up when the mouse comes close, or after his nap */
+      var near = mouseNear && Math.abs(mx - (x + W / 2)) < 260;
+      if (near || n > wakeAt) { if (near) say(t('woof'), 1000); wakeUp(near); }
+      return;
+    }
     if (n < busyUntil) return;
-    if (!card.hidden) { setMode('stand'); setExtra(''); return; }
 
     var speed = 0;
     if (mouseNear) {
+      goingToBed = false;
       target = Math.min(maxX(), Math.max(0, mx - W / 2));
       if (Math.abs(target - x) > 26) { speed = 300; happyDone = false; }
       else {
@@ -1202,30 +1188,33 @@ var showProject;
     } else if (target === null) {
       happyDone = false;
       if (n > restUntil) {
-        /* Decide what to do next */
-        var r = Math.random();
-        if (r < .2) { setExtra('sniff'); restUntil = n + rand(1400, 2400); }
-        else if (r < .35) { setExtra('tilt'); restUntil = n + rand(1200, 2000); }
-        else { setExtra(''); target = rand(10, maxX()); if (Math.abs(target - x) < 60) target = null; restUntil = n + rand(3500, 8000); }
+        if (n > napAt) { goingToBed = true; target = Math.min(maxX(), Math.max(0, bedX() - 70)); }
+        else {
+          var r = Math.random();
+          if (r < .2) { setExtra('sniff'); restUntil = n + rand(1400, 2400); }
+          else if (r < .35) { setExtra('tilt'); restUntil = n + rand(1200, 2000); }
+          else { setExtra(''); target = rand(10, Math.max(20, bedX() - 140)); if (Math.abs(target - x) < 60) target = null; restUntil = n + rand(3500, 8000); }
+        }
       }
       if (target === null) { setMode('stand'); return; }
     }
     if (target !== null) {
-      if (!speed) speed = 72;
+      if (!speed) speed = goingToBed ? 95 : 72;
       var d = target - x;
-      face(d > 0 ? 1 : -1);
-      setExtra('');
+      face(d > 0 ? 1 : -1); setExtra('');
       setMode(speed > 150 ? 'run' : 'walk');
-      var mv = Math.sign(d) * Math.min(Math.abs(d), speed * dt);
-      x += mv; place();
-      if (Math.abs(target - x) < 1) { target = null; setMode('stand'); restUntil = n + rand(3000, 7000); }
+      x += Math.sign(d) * Math.min(Math.abs(d), speed * dt); place();
+      if (Math.abs(target - x) < 1) {
+        target = null; setMode('stand'); restUntil = n + rand(3000, 7000);
+        if (goingToBed) { goingToBed = false; face(1); startJump(bedX(), LIFT, fallAsleep); }
+      }
     }
   }
   raf = requestAnimationFrame(step);
   document.addEventListener('visibilitychange', function () {
     if (document.hidden) { cancelAnimationFrame(raf); raf = 0; } else if (!raf) { last = 0; raf = requestAnimationFrame(step); }
   });
-  addEventListener('resize', function () { x = Math.min(x, maxX()); place(); });
+  addEventListener('resize', function () { if (mode === 'sleep') { x = bedX(); place(); } else { x = Math.min(x, maxX()); place(); } });
 })();
 </script>
 <script data-goatcounter="https://akizik1.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
