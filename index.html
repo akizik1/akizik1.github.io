@@ -12,7 +12,7 @@
 /* Design tokens follow shadcn/ui (neutral zinc palette, one radius scale). Components below are plain-CSS versions of
    shadcn Button, Badge, Card, Tabs, Dialog, Command and Toast, so the site stays one static file for GitHub Pages. */
 :root {
-  /* Cool palette: slate neutrals with one indigo accent */
+  /* Cool palette: slate neutrals; buttons are black on the light side and white in the dark left column */
   --background: #f8fafc;
   --foreground: #0f172a;
   --card: #ffffff;
@@ -20,12 +20,12 @@
   --muted-foreground: #64748b;
   --border: #e2e8f0;
   --input: #dbe2ec;
-  --primary: #4f46e5;
+  --primary: #0c0b12;
   --primary-foreground: #ffffff;
   --accent: #eef2ff;
-  --accent-foreground: #4338ca;
-  --ring: #6366f1;
-  --link: #4338ca;
+  --accent-foreground: #0c0b12;
+  --ring: #64748b;
+  --link: #0f172a;
   --shot-bg: #f1f5f9;
   --overlay: rgba(15, 23, 42, .55);
   --shadow: 0 1px 2px rgba(15,23,42,.05);
@@ -43,12 +43,12 @@
   --muted-foreground: #a1a1aa;
   --border: #232327;
   --input: #2c2c31;
-  --primary: #818cf8;
-  --primary-foreground: #0a0a0b;
+  --primary: #f1f0f5;
+  --primary-foreground: #0c0b12;
   --accent: #1c1c20;
-  --accent-foreground: #a5b4fc;
-  --ring: #818cf8;
-  --link: #a5b4fc;
+  --accent-foreground: #f1f0f5;
+  --ring: #a1a1aa;
+  --link: #e4e4e7;
   --shot-bg: #f1f5f9;
   --overlay: rgba(0, 0, 0, .8);
   --shadow: none;
@@ -127,8 +127,10 @@ button { font-family: inherit; }
 .facts dd { margin: 0; font-weight: 500; }
 .facts dd small { display: block; font-weight: 400; color: var(--muted-foreground); font-size: 12.5px; }
 /* Left column in a dark charcoal tone, like the first version; text and buttons switch to light colors inside it */
-.profile { background: var(--side) !important; color: var(--foreground);
+.profile { background: var(--side) !important; color: var(--foreground); --primary: #ffffff; --primary-foreground: #0c0b12; --ring: #c4c2d0;
   --foreground: #f1f0f5; --muted-foreground: #9d9aae; --border: #211f2c; --input: #2c2a3a; --background: #15141d; --accent: #1d1b28; --muted: #15141d; }
+.profile .btn-outline { background: #ffffff; color: #0c0b12; border-color: #ffffff; box-shadow: none; }
+.profile .btn-outline:hover, .profile .btn-default:hover { background: #e7e6ee; opacity: 1; }
 :root[data-theme="dark"] .profile { --foreground: #f1f0f5; --muted-foreground: #9d9aae; --border: #211f2c; --input: #2c2a3a; --background: #15141d; --accent: #1d1b28; --muted: #15141d; }
 .cta { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 4px; }
 .cta .btn { height: 36px; padding: 0 10px; font-size: 13.5px; }
@@ -383,7 +385,7 @@ footer.site { padding-block: 20px 40px; }
 
 <div class="layout">
   <aside class="profile" id="top" aria-label="About me">
-    <div class="avatar reveal"><img src="profile.webp" alt="Alper Kizik" width="640" height="640"></div>
+    <div class="avatar reveal"><img src="images/profile/profile.webp" alt="Alper Kizik" width="640" height="640"></div>
     <div class="who reveal">
       <h1>Alper Kizik</h1>
       <p class="tagline" data-i18n="tagline">Data quality specialist</p>
@@ -495,8 +497,8 @@ footer.site { padding-block: 20px 40px; }
     <span class="dog-hint" data-i18n="dogMore">Click to see his photos</span>
   </div>
   <button type="button" class="baileys-btn" id="dogBtn" aria-describedby="dogCard">
-    <img class="b-sleep" src="baileys-sleep.webp" alt="" width="260" height="260">
-    <img class="b-awake" src="baileys-awake.webp" alt="" width="260" height="260">
+    <img class="b-sleep" src="images/baileys/sleep.webp" alt="" width="260" height="260">
+    <img class="b-awake" src="images/baileys/awake.webp" alt="" width="260" height="260">
   </button>
 </div>
 
@@ -667,7 +669,7 @@ document.getElementById('copyBtn').addEventListener('click', copyEmail);
 </script>
 
 <script>
-/* To add a project: copy a block below. Put screenshots next to index.html and list them.
+/* To add a project: copy a block below. Put its screenshots in images/projects/<id>/ (id is the project's id below) and list them.
    title, description and note can be plain English text or { en, tr, bg }.
    soon: optional badge above the title for something not released yet.
    links: buttons under the text (first one is filled, the rest outlined). label can be "openApp", "viewCode" or your own text. */
@@ -769,7 +771,7 @@ var showProject;
     var frame = document.createElement('div'); frame.className = 'frame';
     var imgs = [], thumbs = [], i = 0;
     p.images.forEach(function (src, k) {
-      var im = document.createElement('img'); im.src = src; im.alt = (p.title.en || p.title) + ' screenshot ' + (k + 1);
+      var im = document.createElement('img'); im.src = 'images/projects/' + p.id + '/' + src; im.alt = (p.title.en || p.title) + ' screenshot ' + (k + 1);
       im.loading = k ? 'lazy' : 'eager'; im.decoding = 'async';
       if (k === 0) im.className = 'on'; frame.appendChild(im); imgs.push(im);
     });
@@ -960,9 +962,9 @@ var showProject;
   btn.setAttribute('aria-label', t('dogLabel'));
   langListeners.push(function () { btn.setAttribute('aria-label', t('dogLabel')); });
   /* Click or tap: wake him up and open his photo gallery.
-     The gallery shows every photo in the "baileys" folder of the GitHub repo, so new photos appear
+     The gallery shows every photo in the images/baileys/gallery folder of the GitHub repo, so new photos appear
      as soon as they are uploaded there (JPG, PNG, WEBP or GIF). If GitHub can't be reached, the list below is used. */
-  var FOLDER = 'baileys', FALLBACK = ['baileys-1.webp', 'baileys-2.webp', 'baileys-3.webp', 'baileys-4.webp'], cache = null;
+  var FOLDER = 'images/baileys/gallery', FALLBACK = ['baileys-1.webp', 'baileys-2.webp', 'baileys-3.webp', 'baileys-4.webp'], cache = null;
   function photoList() {
     if (cache) return Promise.resolve(cache);
     return fetch('https://api.github.com/repos/akizik1/akizik1.github.io/contents/' + FOLDER + '?ref=main', { headers: { Accept: 'application/vnd.github+json' } })
