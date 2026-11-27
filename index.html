@@ -115,20 +115,20 @@ button { font-family: inherit; }
 
 /* Layout (like the first version): a full-height profile column on the left that fits the screen, work on the right */
 /* The left column's width follows the screen height, so the square photo always fills the column exactly */
-:root { --side-w: clamp(260px, calc(34vh + 56px), 380px); }
+:root { --side-w: clamp(290px, calc(36vh + 64px), 430px); }
 .layout { display: grid; grid-template-columns: var(--side-w) minmax(0, 1fr); min-height: 100vh; }
 .profile { position: sticky; top: 0; height: 100vh; height: 100dvh; overflow: hidden; scrollbar-width: none; display: flex; flex-direction: column; justify-content: center; gap: clamp(12px, 2.2vh, 22px);
-  padding: clamp(18px, 3.2vh, 32px) 28px; background: var(--card); border-right: 1px solid var(--border); }
+  padding: clamp(18px, 3.2vh, 32px) 32px; background: var(--card); border-right: 1px solid var(--border); }
 .profile::-webkit-scrollbar { display: none; }
 .avatar { flex: none; width: 100%; aspect-ratio: 1 / 1; border-radius: calc(var(--radius) + 6px); overflow: hidden; background: var(--muted); }
 .avatar img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 50%; display: block; }
-.profile h1 { font-size: clamp(28px, 2.4vw, 34px); font-weight: 600; line-height: 1.05; letter-spacing: -.04em; margin: 0 0 4px; }
-.profile .tagline { margin: 0; font-size: 15px; color: var(--muted-foreground); }
-.facts { margin: 0; padding-top: clamp(12px, 2vh, 18px); border-top: 1px solid var(--border); display: grid; gap: clamp(8px, 1.4vh, 12px); font-size: 14px; line-height: 1.35; }
+.profile h1 { font-size: clamp(29px, 2.6vw, 38px); font-weight: 600; line-height: 1.05; letter-spacing: -.04em; margin: 0 0 4px; }
+.profile .tagline { margin: 0; font-size: 16px; color: var(--muted-foreground); }
+.facts { margin: 0; padding-top: clamp(12px, 2vh, 18px); border-top: 1px solid var(--border); display: grid; gap: clamp(8px, 1.4vh, 12px); font-size: 14.5px; line-height: 1.35; }
 .facts div { display: grid; gap: 1px; }
-.facts dt { color: var(--muted-foreground); font-size: 12.5px; }
+.facts dt { color: var(--muted-foreground); font-size: 13px; }
 .facts dd { margin: 0; font-weight: 500; }
-.facts dd small { display: block; font-weight: 400; color: var(--muted-foreground); font-size: 12.5px; }
+.facts dd small { display: block; font-weight: 400; color: var(--muted-foreground); font-size: 13px; }
 /* Left column in a dark charcoal tone, like the first version; text and buttons switch to light colors inside it */
 .profile { background: var(--side) !important; color: var(--foreground); --primary: #ffffff; --primary-foreground: #0c0b12; --ring: #c4c2d0;
   --foreground: #ededef; --muted-foreground: #a1a1aa; --border: #232327; --input: #2c2c31; --background: #111113; --accent: #1c1c20; --muted: #18181b; }
@@ -136,7 +136,7 @@ button { font-family: inherit; }
 .profile .btn-outline:hover, .profile .btn-default:hover { background: #e7e6ee; opacity: 1; }
 :root[data-theme="dark"] .profile { --foreground: #ededef; --muted-foreground: #a1a1aa; --border: #232327; --input: #2c2c31; --background: #111113; --accent: #1c1c20; --muted: #18181b; }
 .cta { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 4px; }
-.cta .btn { height: 36px; padding: 0 10px; font-size: 13.5px; }
+.cta .btn { height: 38px; padding: 0 12px; font-size: 14px; }
 main { min-width: 0; padding: 64px clamp(20px, 3vw, 48px) 0; }
 main .container { max-width: 1100px; margin-inline: auto; padding-inline: 0; }
 .about-block h2 { margin: 0 0 8px; font-size: 22px; font-weight: 600; letter-spacing: -.03em; }
@@ -278,10 +278,11 @@ footer.site { padding-block: 32px 48px; font-size: 13px; color: var(--muted-fore
 .zzz { position: absolute; right: 4px; bottom: 70px; display: flex; gap: 1px; font: 700 13px/1 var(--font); color: var(--muted-foreground); pointer-events: none; transition: opacity .3s; }
 .zzz i { font-style: normal; animation: floatZ 2.6s ease-in-out infinite; }
 .zzz i:nth-child(2) { animation-delay: .5s; font-size: 15px; } .zzz i:nth-child(3) { animation-delay: 1s; font-size: 17px; }
-.dog-card { position: absolute; right: 88px; bottom: 8px; width: max-content; max-width: 240px; padding: 10px 14px; border-radius: var(--radius);
+.dog-card { position: absolute; right: 88px; bottom: 8px; width: 250px; padding: 10px 14px; border-radius: var(--radius);
   background: var(--card); border: 1px solid var(--border); box-shadow: var(--shadow-lg); font-size: 13px; line-height: 1.45; color: var(--muted-foreground);
   opacity: 0; transform: translateX(6px); transition: opacity .25s, transform .25s; pointer-events: none; }
-.dog-card b { display: block; color: var(--foreground); font-size: 14px; font-weight: 600; white-space: nowrap; }
+.dog-card b { display: block; color: var(--foreground); font-size: 14px; font-weight: 600; line-height: 1.4; }
+.dog-hint { display: block; margin-top: 4px; font-size: 12.5px; }
 /* Awake: on hover, keyboard focus, or a tap on touch screens */
 .baileys:hover .baileys-btn, .baileys.awake .baileys-btn, .baileys-btn:focus-visible { transform: translateY(-6px) scale(1.12); box-shadow: 0 16px 34px -12px rgba(15,23,42,.5), 0 0 0 1px var(--border); }
 .baileys:hover .b-awake, .baileys.awake .b-awake, .baileys-btn:focus-visible .b-awake { opacity: 1; transform: scale(1); }
@@ -302,12 +303,12 @@ footer.site { padding-block: 20px 40px; }
 /* Shorter screens: tighten the left column so it never needs scrolling */
 @media (min-width: 861px) and (max-height: 860px) {
   .profile { gap: 12px; padding-block: 18px; }
-  :root { --side-w: clamp(250px, calc(28vh + 56px), 380px); }
+  :root { --side-w: clamp(280px, calc(30vh + 64px), 430px); }
   .profile h1 { font-size: 27px; }
   .facts { gap: 8px; padding-top: 12px; font-size: 13.5px; }
 }
 @media (min-width: 861px) and (max-height: 720px) {
-  :root { --side-w: clamp(240px, calc(22vh + 56px), 380px); }
+  :root { --side-w: clamp(270px, calc(24vh + 64px), 430px); }
   .facts { gap: 6px; }
   .profile .tagline { font-size: 14px; }
 }
@@ -515,7 +516,8 @@ footer.site { padding-block: 20px 40px; }
 <div class="baileys" id="baileys">
   <span class="zzz" aria-hidden="true"><i>z</i><i>z</i><i>z</i></span>
   <div class="dog-card" id="dogCard" role="tooltip">
-    <b><span data-i18n="dogHi">Our dog, Baileys</span> <span aria-hidden="true">🐾</span></b>
+    <b data-i18n="dogHi">Here is something outside of the portfolio: our dog, Baileys</b>
+    <span class="dog-hint" data-i18n="dogMore">Click to see some photos to make your day 😃</span>
   </div>
   <button type="button" class="baileys-btn" id="dogBtn" aria-describedby="dogCard">
     <img class="b-sleep" src="images/baileys/sleep.webp" alt="" width="260" height="260">
@@ -546,7 +548,7 @@ var I18N = {
     gPages: 'Bölümler', gProjects: 'Projeler', gLinks: 'Bağlantılar', gSettings: 'Ayarlar',
     goTop: 'Hakkımda', langTo: 'Dili değiştir: ', moreAbout: 'Hakkımda daha fazla',
     dogLabel: 'Köpeğimiz Baileys', kEdu: 'Eğitim', mbaShort: 'Yönetim Bilişim Sistemleri MBA', about: 'Hakkımda', woof: 'Hav!', 
-    dogHi: 'Köpeğimiz Baileys', navBg: 'Deneyim &amp; Eğitim',
+    dogHi: 'Portfolyonun dışından bir şey: köpeğimiz Baileys', dogMore: 'Günün güzelleşsin diye birkaç fotoğrafını görmek için tıkla 😃', navBg: 'Deneyim &amp; Eğitim',
     search: 'Ara…', contact: 'İletişim', background: 'Özgeçmiş', projectsSub: 'Boş zamanlarımda, çoğunlukla yapay zekâ ile geliştirdiğim araçlar.',
     contactTitle: 'İletişime geç', contactText: 'Bana en hızlı e-posta ya da LinkedIn üzerinden ulaşabilirsin. Genelde birkaç gün içinde dönüş yaparım.', contactOr: 'E-posta', contactLi: 'LinkedIn', liBtn: 'LinkedIn’de bağlantı kur',
     fName: 'Adın', fEmail: 'E-posta adresin', fMessage: 'Mesajın', fSend: 'Mesajı gönder', fSending: 'Gönderiliyor…', fSent: 'Teşekkürler! Mesajın gönderildi.', fError: 'Mesaj gönderilemedi. Tekrar dene ya da doğrudan e-posta at.',
@@ -582,7 +584,7 @@ var I18N = {
     gPages: 'Раздели', gProjects: 'Проекти', gLinks: 'Връзки', gSettings: 'Настройки',
     goTop: 'За мен', langTo: 'Смени езика: ', moreAbout: 'Повече за мен',
     dogLabel: 'Baileys, нашето куче', kEdu: 'Образование', mbaShort: 'MBA по управленски информационни системи', about: 'За мен', woof: 'Бау!', 
-    dogHi: 'Нашето куче Baileys', navBg: 'Опит и образование',
+    dogHi: 'Нещо извън портфолиото: нашето куче Baileys', dogMore: 'Кликни за няколко снимки, които ще ти оправят деня 😃', navBg: 'Опит и образование',
     search: 'Търсене…', contact: 'Контакт', background: 'Професионален път', projectsSub: 'Инструменти, които създавам в свободното си време, най-вече с изкуствен интелект.',
     contactTitle: 'Свържи се с мен', contactText: 'Най-бързо ще се свържеш с мен по имейл или в LinkedIn. Обикновено отговарям до няколко дни.', contactOr: 'Имейл', contactLi: 'LinkedIn', liBtn: 'Свържи се в LinkedIn',
     fName: 'Име', fEmail: 'Твоят имейл', fMessage: 'Съобщение', fSend: 'Изпрати съобщението', fSending: 'Изпращане…', fSent: 'Благодаря! Съобщението е изпратено.', fError: 'Съобщението не можа да се изпрати. Опитай отново или ми пиши директно.',
@@ -977,12 +979,12 @@ var showProject;
 })();
 </script>
 <script>
-/* Baileys: hover over him (or tap on a phone) to wake him up and see his photos */
+/* Baileys: hover to wake him up and read who he is; click to see his photos */
 (function () {
   var box = document.getElementById('baileys'), btn = document.getElementById('dogBtn');
   btn.setAttribute('aria-label', t('dogLabel'));
   langListeners.push(function () { btn.setAttribute('aria-label', t('dogLabel')); });
-  /* Hover (or tap on a phone): the screen dims and his photos fade into each other on their own.
+  /* Click: the screen dims and his photos come in like album cards.
      The photos come from the images/baileys/gallery folder of the GitHub repo, so new photos appear
      as soon as they are uploaded there (JPG, PNG, WEBP or GIF). If GitHub can't be reached, the list below is used. */
   var FOLDER = 'images/baileys/gallery', FALLBACK = ['baileys-1.webp', 'baileys-2.webp', 'baileys-3.webp', 'baileys-4.webp'], cache = null;
@@ -1040,14 +1042,10 @@ var showProject;
     box.classList.remove('awake'); show.classList.remove('on');
     setTimeout(function () { if (!playing) show.innerHTML = ''; }, 650);
   }
-  var hoverable = window.matchMedia && matchMedia('(hover: hover)').matches;
-  btn.addEventListener('mouseenter', function () { if (hoverable) start(); });
-  btn.addEventListener('mouseleave', function () { if (hoverable) stop(); });
-  btn.addEventListener('focus', start);
-  btn.addEventListener('blur', stop);
-  btn.addEventListener('click', function () { if (!hoverable) { playing ? stop() : start(); } });
+  /* The album only starts when he is clicked, so nobody triggers it by accident; click again, Esc, or a click anywhere ends it */
+  btn.addEventListener('click', function () { playing ? stop() : start(); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && playing) stop(); });
-  document.addEventListener('pointerdown', function (e) { if (playing && !hoverable && !btn.contains(e.target)) stop(); });
+  document.addEventListener('pointerdown', function (e) { if (playing && !btn.contains(e.target)) stop(); });
 })();
 </script>
 <script data-goatcounter="https://akizik1.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
