@@ -959,12 +959,29 @@ var showProject;
   var box = document.getElementById('baileys'), btn = document.getElementById('dogBtn'), t0 = 0;
   btn.setAttribute('aria-label', t('dogLabel'));
   langListeners.push(function () { btn.setAttribute('aria-label', t('dogLabel')); });
-  /* Click or tap: wake him up and open his photo gallery. Add more photos to this list. */
-  var PHOTOS = ['baileys-1.webp', 'baileys-2.webp', 'baileys-3.webp', 'baileys-4.webp'];
+  /* Click or tap: wake him up and open his photo gallery.
+     The gallery shows every photo in the "baileys" folder of the GitHub repo, so new photos appear
+     as soon as they are uploaded there (JPG, PNG, WEBP or GIF). If GitHub can't be reached, the list below is used. */
+  var FOLDER = 'baileys', FALLBACK = ['baileys-1.webp', 'baileys-2.webp', 'baileys-3.webp', 'baileys-4.webp'], cache = null;
+  function photoList() {
+    if (cache) return Promise.resolve(cache);
+    return fetch('https://api.github.com/repos/akizik1/akizik1.github.io/contents/' + FOLDER + '?ref=main', { headers: { Accept: 'application/vnd.github+json' } })
+      .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(function (files) {
+        var names = files.filter(function (f) { return f.type === 'file' && /\.(jpe?g|png|webp|gif|avif)$/i.test(f.name); })
+          .map(function (f) { return f.name; })
+          .sort(function (a, b) { return a.localeCompare(b, undefined, { numeric: true }); });
+        if (!names.length) throw new Error('empty');
+        return (cache = names);
+      })
+      .catch(function () { return FALLBACK; });
+  }
   btn.addEventListener('click', function () {
     box.classList.add('awake'); clearTimeout(t0);
     t0 = setTimeout(function () { box.classList.remove('awake'); }, 2500);
-    if (window.openGallery) window.openGallery(PHOTOS.map(function (src, k) { return { src: src, alt: 'Baileys, photo ' + (k + 1) }; }), 0);
+    photoList().then(function (names) {
+      if (window.openGallery) window.openGallery(names.map(function (n, k) { return { src: FOLDER + '/' + encodeURIComponent(n), alt: 'Baileys, photo ' + (k + 1) }; }), 0);
+    });
   });
 })();
 </script>
