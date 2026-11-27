@@ -35,23 +35,23 @@
   --mono: "Geist Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
 }
 :root[data-theme="dark"] {
-  --background: #131c2e;
-  --foreground: #e2e8f0;
-  --card: #18223a;
-  --muted: #1d2840;
-  --muted-foreground: #94a3b8;
-  --border: #27334d;
-  --input: #283548;
+  --background: #0a0a0b;
+  --foreground: #ededef;
+  --card: #111113;
+  --muted: #18181b;
+  --muted-foreground: #a1a1aa;
+  --border: #232327;
+  --input: #2c2c31;
   --primary: #818cf8;
-  --primary-foreground: #131c2e;
-  --accent: #232e4a;
+  --primary-foreground: #0a0a0b;
+  --accent: #1c1c20;
   --accent-foreground: #a5b4fc;
   --ring: #818cf8;
   --link: #a5b4fc;
   --shot-bg: #f1f5f9;
-  --overlay: rgba(2, 6, 23, .75);
+  --overlay: rgba(0, 0, 0, .8);
   --shadow: none;
-  --shadow-lg: 0 16px 48px -12px rgba(0,0,0,.7);
+  --shadow-lg: 0 16px 48px -12px rgba(0,0,0,.8);
   color-scheme: dark;
 }
 
@@ -106,11 +106,11 @@ button { font-family: inherit; }
 
 /* Layout (like the first version): a full-height profile column on the left that fits the screen, work on the right */
 .layout { display: grid; grid-template-columns: clamp(290px, 23vw, 370px) minmax(0, 1fr); min-height: 100vh; }
-.profile { position: sticky; top: 0; height: 100vh; overflow-y: auto; scrollbar-width: none; display: flex; flex-direction: column; gap: clamp(12px, 2vh, 20px);
+.profile { position: sticky; top: 0; height: 100vh; height: 100dvh; overflow: hidden; scrollbar-width: none; display: flex; flex-direction: column; gap: clamp(12px, 2vh, 20px);
   padding: clamp(18px, 3.2vh, 32px) 28px; background: var(--card); border-right: 1px solid var(--border); }
 .profile::-webkit-scrollbar { display: none; }
 .avatar { flex: none; width: 100%; aspect-ratio: 4 / 3; max-height: 30vh; border-radius: calc(var(--radius) + 6px); overflow: hidden; background: var(--muted); }
-.avatar img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 36%; transform: scale(1.3); transform-origin: 50% 46%; display: block; }
+.avatar img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 40%; transform: scale(1.08); transform-origin: 50% 45%; display: block; }
 .profile h1 { font-size: clamp(28px, 2.4vw, 34px); font-weight: 600; line-height: 1.05; letter-spacing: -.04em; margin: 0 0 4px; }
 .profile .tagline { margin: 0; font-size: 15px; color: var(--muted-foreground); }
 .facts { margin: 0; padding-top: clamp(12px, 2vh, 18px); border-top: 1px solid var(--border); display: grid; gap: clamp(8px, 1.4vh, 12px); font-size: 14px; line-height: 1.35; }
@@ -144,7 +144,7 @@ main > section.block:first-child { border-top: 0; padding-top: 8px; }
 .tabs button:hover { color: var(--foreground); }
 .tabs button[aria-selected="true"] { background: var(--background); color: var(--foreground); box-shadow: 0 1px 3px rgba(9,9,11,.1); }
 .tabs button[aria-selected="true"] { color: var(--accent-foreground); }
-:root[data-theme="dark"] .tabs button[aria-selected="true"], :root[data-theme="dark"] .lang button[aria-pressed="true"] { background: #2a3654; box-shadow: none; }
+:root[data-theme="dark"] .tabs button[aria-selected="true"] { background: #26262b; box-shadow: none; }
 @media (hover: none) { .kbd-tip { display: none; } }
 
 /* Project card */
@@ -195,26 +195,13 @@ main > section.block:first-child { border-top: 0; padding-top: 8px; }
 [role="tabpanel"][hidden] { display: none; }
 
 /* Contact */
-.contact { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: 40px; align-items: start; padding: 32px; border: 1px solid var(--border); border-radius: calc(var(--radius) + 6px); background: var(--card); box-shadow: var(--shadow); }
+.contact { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 32px; align-items: center; padding: 32px; border: 1px solid var(--border); border-radius: calc(var(--radius) + 6px); background: var(--card); box-shadow: var(--shadow); }
 .contact h2 { margin: 0 0 8px; font-size: 24px; font-weight: 600; letter-spacing: -.025em; }
-.contact p { margin: 0; color: var(--muted-foreground); max-width: 40ch; }
-.contact .or { margin: 24px 0 8px; font-size: 14px; }
-.contact-info { display: grid; justify-items: start; }
-.email-field { display: inline-flex; align-items: center; gap: 4px; min-height: 40px; padding: 0 4px 0 14px; border: 1px solid var(--input); border-radius: var(--radius); background: var(--background); font: 400 14px var(--mono); max-width: 100%; }
-.contact-form { display: grid; gap: 14px; }
-.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-.field { display: grid; gap: 6px; font-size: 14px; font-weight: 500; }
-.field input, .field textarea { width: 100%; font: 400 15px/1.5 var(--font); color: var(--foreground); background: var(--background); border: 1px solid var(--input); border-radius: calc(var(--radius) - 2px); padding: 8px 12px; transition: border-color .15s, box-shadow .15s; }
-.field input { height: 40px; }
-.field textarea { resize: vertical; min-height: 120px; }
-.field input:focus, .field textarea:focus { outline: none; border-color: var(--ring); box-shadow: 0 0 0 3px color-mix(in srgb, var(--ring) 22%, transparent); }
-.field [aria-invalid="true"] { border-color: #dc2626; }
-.hp { position: absolute; left: -9999px; }
-.form-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
-.form-status { margin: 0; font-size: 14px; color: var(--muted-foreground); min-height: 1.5em; }
-.form-status.ok { color: #15803d; } .form-status.err { color: #dc2626; }
-:root[data-theme="dark"] .form-status.ok { color: #4ade80; } :root[data-theme="dark"] .form-status.err { color: #f87171; }
-.btn[disabled] { opacity: .6; cursor: progress; }
+.contact p { margin: 0; color: var(--muted-foreground); max-width: 44ch; }
+.contact-options { display: grid; gap: 14px; }
+.contact-opt { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px; padding: 14px 16px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--background); }
+.opt-label { font-size: 13px; font-weight: 500; color: var(--muted-foreground); }
+.email-field { display: inline-flex; align-items: center; gap: 4px; min-height: 40px; padding: 0 4px 0 14px; border: 1px solid var(--input); border-radius: var(--radius); background: var(--card); font: 500 14px var(--mono); max-width: 100%; }
 .email-field span { user-select: all; word-break: break-all; }
 footer.site { padding-block: 32px 48px; font-size: 13px; color: var(--muted-foreground); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; }
 
@@ -328,6 +315,24 @@ footer.site { padding-bottom: 112px; }
 .toast.show { transform: none; opacity: 1; }
 .toast svg { width: 16px; height: 16px; color: #16a34a; }
 
+/* Shorter screens: tighten the left column so it never needs scrolling */
+@media (min-width: 861px) and (max-height: 860px) {
+  .profile { gap: 12px; padding-block: 18px; }
+  .avatar { max-height: 25vh; }
+  .profile h1 { font-size: 27px; }
+  .facts { gap: 8px; padding-top: 12px; font-size: 13.5px; }
+  .cta .btn { height: 34px; }
+}
+@media (min-width: 861px) and (max-height: 720px) {
+  .avatar { max-height: 21vh; }
+  .facts dd small { display: none; }
+  .facts { gap: 6px; }
+  .profile .tagline { font-size: 14px; }
+}
+@media (min-width: 861px) and (max-height: 600px) {
+  .avatar { display: none; }
+}
+
 /* Responsive */
 @media (max-width: 1280px) {
   .project { grid-template-columns: 1fr; padding: 12px 12px 20px; gap: 16px; }
@@ -345,7 +350,7 @@ footer.site { padding-bottom: 112px; }
     display: grid; grid-template-columns: 96px minmax(0, 1fr); align-items: center; gap: 16px 20px; padding: 24px 20px; }
   .profile > .facts, .profile > .cta { grid-column: 1 / -1; }
   .avatar { aspect-ratio: 1; max-height: none; border-radius: 50%; }
-  .avatar img { transform: scale(1.5); object-position: 50% 30%; }
+  .avatar img { transform: scale(1.3); object-position: 50% 34%; transform-origin: 50% 44%; }
   .facts { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
   .cta { grid-template-columns: repeat(2, 1fr); margin-top: 0; }
   main { padding: 32px 20px 0; }
@@ -475,30 +480,23 @@ footer.site { padding-bottom: 112px; }
   <section class="block" id="contact">
     <div class="container">
       <div class="contact">
-        <div class="contact-info">
+        <div class="contact-intro">
           <h2 data-i18n="contactTitle">Get in touch</h2>
-          <p data-i18n="contactText">Write your message here and it goes straight to my inbox. I usually reply within a few days.</p>
-          <p class="or" data-i18n="contactOr">Or email me directly:</p>
-          <div class="email-field">
-            <span id="email">__EMAIL__</span>
+          <p data-i18n="contactText">The quickest way to reach me is email or LinkedIn. I usually reply within a few days.</p>
+        </div>
+        <div class="contact-options">
+          <div class="contact-opt">
+            <span class="opt-label" data-i18n="contactOr">Email</span>
+            <div class="email-field">
+            <span id="email">alperhasankizik@gmail.com</span>
             <button type="button" class="btn btn-ghost btn-sm btn-icon" id="copyBtn"><svg><use href="#i-copy"/></svg></button>
           </div>
-          <p class="or" data-i18n="contactLi">Or connect with me on LinkedIn:</p>
-          <a class="btn btn-outline" href="https://www.linkedin.com/in/alperkizik" target="_blank" rel="noopener"><svg><use href="#i-linkedin"/></svg><span data-i18n="liBtn">Connect on LinkedIn</span></a>
+          </div>
+          <div class="contact-opt">
+            <span class="opt-label" data-i18n="contactLi">LinkedIn</span>
+            <a class="btn btn-default" href="https://www.linkedin.com/in/alperkizik" target="_blank" rel="noopener"><svg><use href="#i-linkedin"/></svg><span data-i18n="liBtn">Connect on LinkedIn</span></a>
+          </div>
         </div>
-        <!-- Messages are sent through Web3Forms (free). Put your access key from web3forms.com below. -->
-        <form class="contact-form" id="contactForm" data-key="__WEB3FORMS_KEY__" novalidate>
-          <div class="field-row">
-            <label class="field"><span data-i18n="fName">Name</span><input name="name" type="text" autocomplete="name" required maxlength="100"></label>
-            <label class="field"><span data-i18n="fEmail">Your email</span><input name="email" type="email" autocomplete="email" required maxlength="150"></label>
-          </div>
-          <label class="field"><span data-i18n="fMessage">Message</span><textarea name="message" rows="5" required maxlength="5000"></textarea></label>
-          <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
-          <div class="form-foot">
-            <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
-            <button type="submit" class="btn btn-default" id="sendBtn"><svg><use href="#i-send"/></svg><span data-i18n="fSend">Send message</span></button>
-          </div>
-        </form>
       </div>
       <footer class="site">
         <span data-i18n="updated">Updated November 2026</span>
@@ -624,7 +622,7 @@ var I18N = {
     dogLabel: 'Köpeğimiz Baileys', kEdu: 'Eğitim', mbaShort: 'Yönetim Bilişim Sistemleri MBA', about: 'Hakkımda', woof: 'Hav!', 
     dogHi: 'Bu Baileys, bizim tatlı oğlumuz.', dogBio: 'Bazen bizi deli ediyor ama onu çok seviyoruz.', footDog: 'Baileys bizim köpeğimiz. Bazen bizi deli ediyor ama onu çok seviyoruz.',
     search: 'Ara…', contact: 'İletişim', background: 'Özgeçmiş', projectsSub: 'Boş zamanlarımda, çoğunlukla yapay zekâ ile geliştirdiğim araçlar.',
-    contactTitle: 'İletişime geç', contactText: 'Mesajını buraya yaz, doğrudan e-posta kutuma gelsin. Genelde birkaç gün içinde dönüş yaparım.', contactOr: 'Ya da doğrudan e-posta gönder:', contactLi: 'Ya da LinkedIn’den bağlantı kur:', liBtn: 'LinkedIn’de bağlantı kur',
+    contactTitle: 'İletişime geç', contactText: 'Bana en hızlı e-posta ya da LinkedIn üzerinden ulaşabilirsin. Genelde birkaç gün içinde dönüş yaparım.', contactOr: 'E-posta', contactLi: 'LinkedIn', liBtn: 'LinkedIn’de bağlantı kur',
     fName: 'Adın', fEmail: 'E-posta adresin', fMessage: 'Mesajın', fSend: 'Mesajı gönder', fSending: 'Gönderiliyor…', fSent: 'Teşekkürler! Mesajın gönderildi.', fError: 'Mesaj gönderilemedi. Tekrar dene ya da doğrudan e-posta at.',
     fMissing: 'Lütfen adını, e-postanı ve mesajını yaz.', fBadEmail: 'E-posta adresini kontrol et.', fMailApp: 'E-posta uygulaman mesaj dolu şekilde açıldı. Oradan Gönder’e bas.',
     tip: 'İpucu: siteyi aramak için', tip2: 'tuşuna bas',
@@ -660,7 +658,7 @@ var I18N = {
     dogLabel: 'Baileys, нашето куче', kEdu: 'Образование', mbaShort: 'MBA по управленски информационни системи', about: 'За мен', woof: 'Бау!', 
     dogHi: 'Това е Baileys, нашето добро момче.', dogBio: 'Понякога ни дразни, но много го обичаме.', footDog: 'Baileys е нашето куче. Понякога ни дразни, но много го обичаме.',
     search: 'Търсене…', contact: 'Контакт', background: 'Професионален път', projectsSub: 'Инструменти, които създавам в свободното си време, най-вече с изкуствен интелект.',
-    contactTitle: 'Свържи се с мен', contactText: 'Напиши съобщението си тук и то ще стигне директно до пощата ми. Обикновено отговарям до няколко дни.', contactOr: 'Или ми пиши директно:', contactLi: 'Или се свържи с мен в LinkedIn:', liBtn: 'Свържи се в LinkedIn',
+    contactTitle: 'Свържи се с мен', contactText: 'Най-бързо ще се свържеш с мен по имейл или в LinkedIn. Обикновено отговарям до няколко дни.', contactOr: 'Имейл', contactLi: 'LinkedIn', liBtn: 'Свържи се в LinkedIn',
     fName: 'Име', fEmail: 'Твоят имейл', fMessage: 'Съобщение', fSend: 'Изпрати съобщението', fSending: 'Изпращане…', fSent: 'Благодаря! Съобщението е изпратено.', fError: 'Съобщението не можа да се изпрати. Опитай отново или ми пиши директно.',
     fMissing: 'Моля, попълни име, имейл и съобщение.', fBadEmail: 'Провери имейл адреса си.', fMailApp: 'Пощенското ти приложение се отвори с попълненото съобщение. Натисни „Изпрати“ там.',
     tip: 'Съвет: натисни', tip2: 'за търсене в сайта',
@@ -750,39 +748,6 @@ function copyEmail() {
 }
 document.getElementById('copyBtn').addEventListener('click', copyEmail);
 
-/* Contact form: sends the message to my inbox through Web3Forms.
-   Without an access key it opens the visitor's mail app with the message already filled in. */
-(function () {
-  var form = document.getElementById('contactForm'), status = document.getElementById('formStatus'), btn = document.getElementById('sendBtn');
-  function say(key, cls) { status.textContent = key ? t(key) : ''; status.className = 'form-status' + (cls ? ' ' + cls : ''); status.dataset.k = key || ''; }
-  langListeners.push(function () { if (status.dataset.k) status.textContent = t(status.dataset.k); });
-  form.addEventListener('input', function (e) { e.target.removeAttribute('aria-invalid'); });
-  form.addEventListener('submit', function (e) {
-    e.preventDefault();
-    if (form.botcheck.checked) return;
-    var bad = null;
-    ['name', 'email', 'message'].forEach(function (n) {
-      var el = form[n], ok = el.value.trim() && (n !== 'email' || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value.trim()));
-      el.setAttribute('aria-invalid', ok ? 'false' : 'true'); if (!ok && !bad) bad = el;
-    });
-    if (bad) { say(bad === form.email && form.email.value.trim() ? 'fBadEmail' : 'fMissing', 'err'); bad.focus(); return; }
-    var name = form.name.value.trim(), from = form.email.value.trim(), msg = form.message.value.trim();
-    var key = form.getAttribute('data-key') || '';
-    if (!key || key.indexOf('__') === 0) {
-      var to = document.getElementById('email').textContent.trim();
-      location.href = 'mailto:' + to + '?subject=' + encodeURIComponent('Portfolio: ' + name) + '&body=' + encodeURIComponent(msg + '\n\n' + name + ' (' + from + ')');
-      say('fMailApp'); return;
-    }
-    btn.disabled = true; say('fSending');
-    fetch('https://api.web3forms.com/submit', {
-      method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-      body: JSON.stringify({ access_key: key, subject: 'Portfolio message from ' + name, from_name: name, name: name, email: from, message: msg })
-    }).then(function (r) { return r.json(); }).then(function (d) {
-      if (!d.success) throw new Error(d.message);
-      form.reset(); say('fSent', 'ok'); toast(t('fSent'));
-    }).catch(function () { say('fError', 'err'); }).then(function () { btn.disabled = false; });
-  });
-})();
 </script>
 
 <script>
@@ -835,7 +800,7 @@ var PROJECTS = [
     },
     tools: ["JavaScript", "Vite", "Supabase", "PostgreSQL", "Cloudflare Workers", "Claude API", "PWA", "IndexedDB", "Git", "GitHub", "Claude by Anthropic"],
     images: ["pano-01.webp","pano-02.webp","pano-03.webp","pano-04.webp","pano-05.webp","pano-06.webp","pano-07.webp","pano-08.webp","pano-09.webp","pano-10.webp","pano-11.webp","pano-12.webp"],
-    links: [{ label: "openApp", url: "__PANO_URL__" }]
+    links: [{ label: "openApp", url: "https://seller-panel.alperhasankizik.workers.dev/" }]
   },
   {
     id: "cro",
