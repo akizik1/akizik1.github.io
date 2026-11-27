@@ -135,8 +135,8 @@ button { font-family: inherit; }
 main { min-width: 0; padding: 64px clamp(20px, 3vw, 48px) 0; }
 main .container { max-width: 1100px; margin-inline: auto; padding-inline: 0; }
 .about-block h2 { margin: 0 0 8px; font-size: 22px; font-weight: 600; letter-spacing: -.03em; }
-.about-block .about { margin: 0; font-size: 16px; line-height: 1.6; max-width: 62ch; text-wrap: pretty; }
-.about-block .also { margin: 6px 0 0; font-size: 14px; color: var(--muted-foreground); max-width: 70ch; }
+.about-block .about { margin: 0; font-size: 16px; line-height: 1.6; text-wrap: pretty; }
+.about-block .also { margin: 6px 0 0; font-size: 14px; color: var(--muted-foreground); }
 .bg-grid { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr); gap: 36px; }
 .bg-grid h2 { margin: 0 0 14px; font-size: 22px; font-weight: 600; letter-spacing: -.03em; }
 .reveal { opacity: 0; transform: translateY(8px); animation: rise .6s cubic-bezier(.2,.7,.2,1) forwards; }
@@ -259,6 +259,7 @@ footer.site { padding-block: 32px 48px; font-size: 13px; color: var(--muted-fore
   background: var(--card); border: 1px solid var(--border); box-shadow: var(--shadow-lg); font-size: 13px; line-height: 1.45; color: var(--muted-foreground);
   opacity: 0; transform: translateX(6px); transition: opacity .25s, transform .25s; pointer-events: none; }
 .dog-card b { display: block; color: var(--foreground); font-size: 14px; font-weight: 600; white-space: nowrap; }
+.dog-hint { display: block; font-size: 12px; white-space: nowrap; }
 /* Awake: on hover, keyboard focus, or a tap on touch screens */
 .baileys:hover .baileys-btn, .baileys.awake .baileys-btn, .baileys-btn:focus-visible { transform: translateY(-6px) scale(1.12); box-shadow: 0 16px 34px -12px rgba(15,23,42,.5), 0 0 0 1px var(--border); }
 .baileys:hover .b-awake, .baileys.awake .b-awake, .baileys-btn:focus-visible .b-awake { opacity: 1; transform: scale(1); }
@@ -490,7 +491,8 @@ footer.site { padding-block: 20px 40px; }
 <div class="baileys" id="baileys">
   <span class="zzz" aria-hidden="true"><i>z</i><i>z</i><i>z</i></span>
   <div class="dog-card" id="dogCard" role="tooltip">
-    <b><span data-i18n="dogHi">This is Baileys, our dog.</span> <span aria-hidden="true">🐾</span></b>
+    <b><span data-i18n="dogHi">Our dog, Baileys</span> <span aria-hidden="true">🐾</span></b>
+    <span class="dog-hint" data-i18n="dogMore">Click to see his photos</span>
   </div>
   <button type="button" class="baileys-btn" id="dogBtn" aria-describedby="dogCard">
     <img class="b-sleep" src="baileys-sleep.webp" alt="" width="260" height="260">
@@ -521,7 +523,7 @@ var I18N = {
     gPages: 'Bölümler', gProjects: 'Projeler', gLinks: 'Bağlantılar', gSettings: 'Ayarlar',
     goTop: 'Hakkımda', langTo: 'Dili değiştir: ', moreAbout: 'Hakkımda daha fazla',
     dogLabel: 'Köpeğimiz Baileys', kEdu: 'Eğitim', mbaShort: 'Yönetim Bilişim Sistemleri MBA', about: 'Hakkımda', woof: 'Hav!', 
-    dogHi: 'Bu Baileys, bizim köpeğimiz.', navBg: 'Deneyim &amp; Eğitim',
+    dogHi: 'Köpeğimiz Baileys', dogMore: 'Fotoğraflarını görmek için tıkla', navBg: 'Deneyim &amp; Eğitim',
     search: 'Ara…', contact: 'İletişim', background: 'Özgeçmiş', projectsSub: 'Boş zamanlarımda, çoğunlukla yapay zekâ ile geliştirdiğim araçlar.',
     contactTitle: 'İletişime geç', contactText: 'Bana en hızlı e-posta ya da LinkedIn üzerinden ulaşabilirsin. Genelde birkaç gün içinde dönüş yaparım.', contactOr: 'E-posta', contactLi: 'LinkedIn', liBtn: 'LinkedIn’de bağlantı kur',
     fName: 'Adın', fEmail: 'E-posta adresin', fMessage: 'Mesajın', fSend: 'Mesajı gönder', fSending: 'Gönderiliyor…', fSent: 'Teşekkürler! Mesajın gönderildi.', fError: 'Mesaj gönderilemedi. Tekrar dene ya da doğrudan e-posta at.',
@@ -557,7 +559,7 @@ var I18N = {
     gPages: 'Раздели', gProjects: 'Проекти', gLinks: 'Връзки', gSettings: 'Настройки',
     goTop: 'За мен', langTo: 'Смени езика: ', moreAbout: 'Повече за мен',
     dogLabel: 'Baileys, нашето куче', kEdu: 'Образование', mbaShort: 'MBA по управленски информационни системи', about: 'За мен', woof: 'Бау!', 
-    dogHi: 'Това е Baileys, нашето куче.', navBg: 'Опит и образование',
+    dogHi: 'Нашето куче Baileys', dogMore: 'Кликни, за да видиш снимките му', navBg: 'Опит и образование',
     search: 'Търсене…', contact: 'Контакт', background: 'Професионален път', projectsSub: 'Инструменти, които създавам в свободното си време, най-вече с изкуствен интелект.',
     contactTitle: 'Свържи се с мен', contactText: 'Най-бързо ще се свържеш с мен по имейл или в LinkedIn. Обикновено отговарям до няколко дни.', contactOr: 'Имейл', contactLi: 'LinkedIn', liBtn: 'Свържи се в LinkedIn',
     fName: 'Име', fEmail: 'Твоят имейл', fMessage: 'Съобщение', fSend: 'Изпрати съобщението', fSending: 'Изпращане…', fSent: 'Благодаря! Съобщението е изпратено.', fError: 'Съобщението не можа да се изпрати. Опитай отново или ми пиши директно.',
@@ -739,6 +741,7 @@ var showProject;
   var lbList = [], lbI = 0, lbOnClose = null, lbReturn = null;
   function lbShow(k) { lbI = (k + lbList.length) % lbList.length; lbImg.src = lbList[lbI].src; lbImg.alt = lbList[lbI].alt; lbCount.textContent = (lbI + 1) + ' / ' + lbList.length; }
   function lbOpen(imgs, k, onClose) { lbReturn = document.activeElement; lbList = imgs; lbOnClose = onClose; lbShow(k); lb.hidden = false; document.documentElement.style.overflow = 'hidden'; lb.querySelector('.lb-close').focus(); }
+  window.openGallery = lbOpen;
   function lbClose() { lb.hidden = true; document.documentElement.style.overflow = ''; if (lbOnClose) lbOnClose(lbI); if (lbReturn && lbReturn.focus) lbReturn.focus(); }
   lb.querySelector('.lb-close').onclick = lbClose;
   lb.querySelector('.lb-prev').onclick = function (e) { e.stopPropagation(); lbShow(lbI - 1); };
@@ -956,9 +959,12 @@ var showProject;
   var box = document.getElementById('baileys'), btn = document.getElementById('dogBtn'), t0 = 0;
   btn.setAttribute('aria-label', t('dogLabel'));
   langListeners.push(function () { btn.setAttribute('aria-label', t('dogLabel')); });
+  /* Click or tap: wake him up and open his photo gallery. Add more photos to this list. */
+  var PHOTOS = ['baileys-1.webp', 'baileys-2.webp', 'baileys-3.webp', 'baileys-4.webp'];
   btn.addEventListener('click', function () {
     box.classList.add('awake'); clearTimeout(t0);
-    t0 = setTimeout(function () { box.classList.remove('awake'); }, 4000);
+    t0 = setTimeout(function () { box.classList.remove('awake'); }, 2500);
+    if (window.openGallery) window.openGallery(PHOTOS.map(function (src, k) { return { src: src, alt: 'Baileys, photo ' + (k + 1) }; }), 0);
   });
 })();
 </script>
